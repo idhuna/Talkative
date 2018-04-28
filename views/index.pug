@@ -206,12 +206,16 @@ block content
                             | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
                             | dolor, quis ullamcorper ligula sodales.
                   .card-footer
-                    .input-group
-                      input#btn-input.form-control.form-control-sm(type='text', placeholder='Type your message here...')
-                      span.input-group-btn
-                        button#btn-chat.btn.btn-info.btn-sm
-                          | Send
+                    form#form(action="/")
+                      .input-group
+                        input#btn-input.form-control.form-control-sm(type='text', placeholder='Type your message here...')
+                        span.input-group-btn
+                          button#btn-chat.btn.btn-info.btn-sm
+                            | Send
 
           
           script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
           script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')
+          //- script(src='http://localhost:3002/socket.io/socket.io.js')
+          script(src='http://localhost:3002/socket.io/socket.io.js')
+          script(src='/chat.js')
