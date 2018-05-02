@@ -12,6 +12,11 @@ var groupSchema = new Schema({
         type: [Schema.Types.ObjectId],
         default: null,
     },
+    groupName: {
+        type: String,
+        required: true,
+        unique: true,
+    }
 });
 
-mongoose.model('group',groupSchema);
+mongoose.model('Group',groupSchema);

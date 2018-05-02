@@ -20,4 +20,4 @@ var clientSchema = new Schema({
 
 });
 
-mongoose.model('client', clientSchema);
+mongoose.model('Client', clientSchema);

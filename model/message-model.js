@@ -20,4 +20,4 @@ var messageSchema = new Schema({
     }
 });
 
-mongoose.model('message',messageSchema);
+mongoose.model('Message',messageSchema);
