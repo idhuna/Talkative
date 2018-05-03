@@ -1,0 +1,66 @@
+extends layout
+
+block content
+    //- client id name password
+
+    html
+      head
+        // Stylesheets
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css')
+      body
+        .container
+          form.form-horizontal(role='form', method='POST', action='/register')
+            .row
+              .col-md-3
+              .col-md-6
+                h2 Register Client ID
+                hr
+            .row
+              .col-md-3.field-label-responsive
+                label(for='clientID') Client ID
+              .col-md-6
+                .form-group
+                  .input-group.mb-2.mr-sm-2.mb-sm-0
+                    .input-group-addon(style='width: 2.6rem')
+                      i.fa.fa-user
+                    input#clientID.form-control(type='text', name='clientID', placeholder='Client ID', required, autofocus='')
+              .col-md-3
+            .row
+              .col-md-3.field-label-responsive
+                label(for='name') Name
+              .col-md-6
+                .form-group
+                  .input-group.mb-2.mr-sm-2.mb-sm-0
+                    .input-group-addon(style='width: 2.6rem')
+                      i.fa.fa-tag
+                    input#name.form-control(type='text', name='name', placeholder='Name', required)
+              .col-md-3
+            .row
+              .col-md-3.field-label-responsive
+                label(for='password') Password
+              .col-md-6
+                .form-group.has-danger
+                  .input-group.mb-2.mr-sm-2.mb-sm-0
+                    .input-group-addon(style='width: 2.6rem')
+                      i.fa.fa-key
+                    input#password.form-control(type='password', name='password', placeholder='Password', required='')
+              .col-md-3
+            .row
+              .col-md-3.field-label-responsive
+                label(for='password') Confirm Password
+              .col-md-6
+                .form-group
+                  .input-group.mb-2.mr-sm-2.mb-sm-0
+                    .input-group-addon(style='width: 2.6rem')
+                      i.fa.fa-repeat
+                    input#password-confirm.form-control(type='password', name='password-confirmation', placeholder='Password', required='')
+            .row
+              .col-md-3
+              .col-md-6
+                button.btn.btn-success(type='submit')
+                  i.fa.fa-user-plus
+                  |  Register
+        
+        link#bootstrap-css(href='//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', rel='stylesheet')
+        script(src='//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js')
+        script(src='//code.jquery.com/jquery-1.11.1.min.js')
