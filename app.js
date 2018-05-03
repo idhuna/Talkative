@@ -9,8 +9,8 @@ var mongoose = require('mongoose');
 //connect to mongoDB
 mongoose.connect('mongodb://localhost/test');
 require('./model/group-model');
-require('./model/client-model.js');
-require('./model/message-model.js');
+require('./model/client-model');
+require('./model/message-model');
 
 var app = express();
 
@@ -30,6 +30,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+console.log(indexRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/group', groupRouter);
