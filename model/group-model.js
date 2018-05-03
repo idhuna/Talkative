@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var groupSchema = new Schema({
-    groupID: {
+    groupName: {
         type: String,
         required: true,
         unique: true,
@@ -12,11 +12,7 @@ var groupSchema = new Schema({
         type: [Schema.Types.ObjectId],
         default: null,
     },
-    groupName: {
-        type: String,
-        required: true,
-        unique: true,
-    }
+    
 });
 
 const Group = mongoose.model('Group',groupSchema);
