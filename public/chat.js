@@ -10,8 +10,8 @@ socket.on('disconnect', () => {
   console.log(`we're disconnected`)
 })
 
-socket.on('msg',(msg) => {
-  console.log('receive: ',msg)
+socket.on('msg',(groupID,msg) => {
+  console.log('receive: ',groupID,msg)
 })
 
 
