@@ -1,6 +1,16 @@
 console.log('from chat.js')
 var socket = io('http://localhost:3000/')
 
+async function fetchFromURLtest(){
+  let d = await fetch("https://api.chucknorris.io/jokes/random")
+  console.log(d)
+}
+
+async function fetchGroups(){
+  let groups = await fetch("group/allgroups").then(res => res.json())
+  console.log("fetchGroups",groups)
+}
+
 // we set these in pug
 console.log("clientID",clientID)
 
@@ -24,12 +34,11 @@ $('#join').click(() => {
 $('#addTopicBtn').click(() => {
   console.log("createGroup")
   let groupName = $('#nameTopic').val()
-  let clientID = "phootip" // mock id
   fetch('./group/createGroup',{
     method: "POST",
     body: JSON.stringify(groupName,clientID)
   }).then(data => {
-    console.log("receive data",data)
+    console.log("createGroup data back",data)
   })
 })
 
