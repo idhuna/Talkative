@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 
 router.post('/createuser', async function (req, res, next) {
   console.log(req.body);
-
+  
   const { clientID, password, name } = req.body;
   let newUser = new Client({
     clientID: clientID,
@@ -25,7 +25,8 @@ router.post('/createuser', async function (req, res, next) {
     console.log(err);
   }
 
-  res.send(newUser)
+  // res.send(newUser)
+  res.render('login',{tilte:"Login page",msg:"Your ID has been created"})
 
 });
 

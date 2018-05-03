@@ -1,6 +1,9 @@
 console.log('from chat.js')
 var socket = io('http://localhost:3000/')
 
+// we set these in pug
+console.log("clientID",clientID)
+
 socket.on('connect', () => {
   console.log(`we're connected`, socket.connected)
   console.log("this is our socket",socket)
