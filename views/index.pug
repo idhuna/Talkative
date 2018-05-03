@@ -1,37 +1,54 @@
 extends layout
 
 block content
-  h1=title +' Chat'
+  h1='Talkactive'
 
   html
     head
+      link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css')
+      link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+      link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.10/css/all.css', integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg', crossorigin='anonymous')
+      link(href='https://fonts.googleapis.com/css?family=Quicksand', rel='stylesheet')
+      script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js') 
+      //- Run Script
       script.
         $(document).ready(function(){
-          var topic = "Topic xxx";
+          var topic = "Topic ";
           var time = "1 hour ago";
           var notRead = "xx";
           var lastChat = "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.";
           $("#addTopicBtn").click(function(){
             event.preventDefault();
-            $("#topicList").append('<a href="#" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropShadow" style="margin-bottom:20px">'
+            topic = $('#nameTopic').val();
+            $('#nameTopic').val("")
+            $("#topicList").append('<a href="#" id="id'+topic+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
               + '<div class="d-flex w-100 justify-content-between">'
               + '<h5 class="mb-1">'+topic+'</h5>' // Topic
-              + '  <div class="myauto list-group">'
-              + '    <small>'+time+'</small>' // Date
-              + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read
+              + '  <button type="button" class="close" aria-label="Close">'
+              + '       <span aria-hidden="true">&times;</span>'
+              + '    </button>'
+              + '  <div class="my-auto list-group">'
               + '  </div>'
               + '</div>'
-              + '<p class="mb-1">'+lastChat+'</p>'  
+              + '<div class="d-flex">'
+              + '<p class="mb-1" style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;">'+lastChat+'</p>' 
+              + '    <small style=" width: 74px;">'+time+'</small>' // Date
+              + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read 
+              + '</div>'
               + '</a>'
             );
+            $("#id"+topic).click()
           })
-        })
+          })
       style.
         body {
           font-family: 'Quicksand', sans-serif;
         }
         .dropShadow {
           box-shadow: 0 4px 50px 0 rgba(0, 0, 0, 0.13), 0 10px 25px 0 rgba(0, 0, 0, 0.13);
+        }
+        .dropBoxShadow{
+            box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.1), 0 4px 9px 0 rgba(0, 0, 0, 0.1);
         }
         .rcorners {
           border-radius: 12px;
@@ -81,135 +98,164 @@ block content
             overflow-y: scroll;
             height: 250px;
         }
-
-        ::-webkit-scrollbar-track
-        {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-            background-color: #F5F5F5;
+        #scrollbar{
+          height:656px;
+          overflow:auto;
         }
-
-        ::-webkit-scrollbar
-        {
-            width: 12px;
-            background-color: #F5F5F5;
+        #scrollbarBody{
+          height:496px;
+          overflow:auto;
         }
-
-        ::-webkit-scrollbar-thumb
-        {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-            background-color: #555;
+        .borderless{
+          border : hidden;
+        }
+        .chatBox{
+          border-width: 1px; 
+          border-color: rgb(221, 221, 221);
+          border-radius: 20px; 
+          padding: 11px;
+          box-shadow: 0 3px 6px 3px rgb(232, 232, 232);
+          margin-bottom:9px;
+        }
+        .createGroup-button{
+          position:fixed;
+          font-size:2em;
+          color:#007bff;
+          z-index:10;
+          opacity:0.5;
         }
     body
       .container-fluid
         .row
+          //- First Col
           .col-md-1.rcorners.dropShadow(style='background:linear-gradient(234deg, rgba(28, 155, 255, 0.84), #117de7);max-width:5%;')
             div(style='font-size:25px;color:white;margin-right:20px;')
               i.fas.fa-user-plus
               i.fas.fa-user-plus
-          .col-md-5
+          //- Second Col
+          #scrollbar.col-md-5
             #topicList.list-group.md-3
-              a.list-group-item.list-group-item-action.flex-column.dropShadow.align-items-start.rcorners(href='#', style='margin-bottom:20px;border-top-right-radius:12px;border-top-left-radius:12px;')
+              a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#', style='margin-bottom:20px;border-top-right-radius:12px;border-top-left-radius:12px;')
                 .d-flex.w-100.justify-content-between
-                  h5.mb-1 Topic 1
-                  .my-auto.list-group
-                    small 3 days ago
-                    span.badge.badge-primary.badge-pill.mx-auto 140
-                p.mb-1
-                  | Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit. Maecenas sed diam eget risus varius blandit.
+                    h5.mb-1 Topic 0
+                    button.close(type='button', aria-label='Close',style=" margin-bottom: 6px;")
+                        span(aria-hidden='true') ×
+                .d-flex
+                    p.mb-1(style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;")
+                      | Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta 
+                    .my-auto.list-group
+                        small(style=" width: 74px;") 3 days ago
+                        span.badge.badge-primary.badge-pill.mx-auto 140
               
-            div(style='font-size:2em;color:#007bff;margin-right:3px;')
-              i#addTopicBtn.fas.fa-plus-circle.fa-pull-right
+            i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#topicModal')
+            #topicModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5#topicModalLabel.modal-title Create a topic
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      span(aria-hidden='true') ×
+                  .modal-body
+                    form
+                      .form-group
+                        label.col-form-label(for='nameTopic') Topic
+                        input#nameTopic.form-control(type='text', placeholder='Topic')
+                  .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    button#addTopicBtn.btn.btn-primary(type='button', data-dismiss='modal') Create
+
+          //- Third column
           .col-md-6.rcorners.dropShadow
             .container
               .row
-                .card.card-primary
+                .card.card-primary.scrollbar-morpheus-den.borderless
                   .card-header
-                    span.glyphicon.glyphicon-comment
-                    |  Chat
-                    .btn-group.float-right
-                      button.btn.btn-secondary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown')
-                        span.glyphicon.glyphicon-chevron-down
-                      ul.dropdown-menu.slidedown
-                        li
-                          a(href='http://www.jquery2dotnet.com')
-                            span.glyphicon.glyphicon-refresh
-                            | Refresh
-                        li
-                          a(href='http://www.jquery2dotnet.com')
-                            span.glyphicon.glyphicon-ok-sign
-                            | Available
-                        li
-                          a(href='http://www.jquery2dotnet.com')
-                            span.glyphicon.glyphicon-remove
-                            | Busy
-                        li
-                          a(href='http://www.jquery2dotnet.com')
-                            span.glyphicon.glyphicon-time
-                            | Away
-                        li.dropdown-divider
-                        li
-                          a(href='http://www.jquery2dotnet.com')
-                            span.glyphicon.glyphicon-off
-                            | Sign Out
-                  .card-block
-                    ul.chat
-                      li.left.clearfix
-                        span.chat-img.float-xs-left
-                          img.img-circle(src='http://placehold.it/50/55C1E7/fff&text=U', alt='User Avatar')
-                        .chat-body.clearfix
-                          .header
-                            strong.primary-font Jack Sparrow
-                            small.float-xs-right.text-muted
-                              span.glyphicon.glyphicon-time
-                              | 12 mins ago
-                          p
-                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                            | dolor, quis ullamcorper ligula sodales.
-                      li.right.clearfix
-                        span.chat-img.float-xs-right
-                          img.img-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
-                        .chat-body.clearfix
-                          .header
-                            small.text-muted
-                              span.glyphicon.glyphicon-time
-                              | 13 mins ago
-                            strong.float-xs-right.primary-font Bhaumik Patel
-                          p
-                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                            | dolor, quis ullamcorper ligula sodales.
-                      li.left.clearfix
-                        span.chat-img.float-xs-left
-                          img.img-circle(src='http://placehold.it/50/55C1E7/fff&text=U', alt='User Avatar')
-                        .chat-body.clearfix
-                          .header
-                            strong.primary-font Jack Sparrow
-                            small.float-xs-right.text-muted
-                              span.glyphicon.glyphicon-time
-                              | 14 mins ago
-                          p
-                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                            | dolor, quis ullamcorper ligula sodales.
-                      li.right.clearfix
-                        span.chat-img.float-xs-right
-                          img.img-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
-                        .chat-body.clearfix
-                          .header
-                            small.text-muted
-                              span.glyphicon.glyphicon-time
-                              | 15 mins ago
-                            strong.float-xs-right.primary-font Bhaumik Patel
-                          p
-                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                            | dolor, quis ullamcorper ligula sodales.
+                    div
+                        strong(style="font-size:29px;") 
+                            | Chat
+                        a.text-muted.float-right(href='http://www.jquery2dotnet.com',style="margin-top: 13px;")
+                            i.fas.fa-sign-out-alt.fa-lg.mr-3
+                                //- | Leave Group
+                        a.text-muted.float-right(href='http://www.jquery2dotnet.com',style=" margin-top: 13px;")
+                            i.fas.fa-sync-alt.fa-lg.mr-3
+                            //- | Refresh
+                
+                  #scrollbarBody.rcorners
+                    div
+                      ul.chat
+                        //- left
+                        li.mb-3(style="border:hidden;")
+                          .d-flex.flex-row
+                            .chat-img.float-left
+                              img.rounded-circle(src='http://placehold.it/50/55C1E7/fff&text=U', alt='User Avatar')
+                            .ml-3
+                              .header
+                                strong.primary-font Jack Sparrow
+                              .chatBox
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                | dolor, quis ullamcorper ligula sodales.
+                              small.float-right.text-muted
+                                | 12 mins ago
+                        //- right
+                        li.mb-3(style="border:hidden;")
+                          .d-flex.flex-row-reverse
+                            .chat-img.float-right
+                              img.rounded-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
+                            .mr-3
+                              .header(style="text-align: right;")
+                                strong.primary-font Bhaumik Patel
+                              .chatBox
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                | dolor, quis ullamcorper ligula sodales.
+                              small.text-muted
+                                | 13 mins ago
+                        //- left
+                        li.mb-3(style="border:hidden;")
+                          .d-flex.flex-row
+                            .chat-img.float-left
+                              img.rounded-circle(src='http://placehold.it/50/55C1E7/fff&text=U', alt='User Avatar')
+                            .ml-3
+                              .header
+                                strong.primary-font Jack Sparrow
+                              .chatBox
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                | dolor, quis ullamcorper ligula sodales.
+                              small.float-right.text-muted
+                                | 12 mins ago
+                        //- right
+                        li.mb-3(style="border:hidden;")
+                          .d-flex.flex-row-reverse
+                            .chat-img.float-right
+                              img.rounded-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
+                            .mr-3
+                              .header(style="text-align: right;")
+                                strong.primary-font Bhaumik Patel
+                              .chatBox
+                                | Lorem ipsum dolor sit amet, 
+                              small.text-muted
+                                | 13 mins ago
+                        //- right
+                        li.mb-3(style="border:hidden;")
+                          .d-flex.flex-row-reverse
+                            .chat-img.float-right
+                              img.rounded-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
+                            .mr-3
+                              .header(style="text-align: right;")
+                                strong.primary-font Bhaumik Patel
+                              .chatBox
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                | dolor, quis ullamcorper ligula sodales.
+                              small.text-muted
+                                | 13 mins ago
                   .card-footer
-                    form#form(action="/")
-                      .input-group
-                        input#btn-input.form-control.form-control-sm(type='text', placeholder='Type your message here...')
-                        span.input-group-btn
-                          button#btn-chat.btn.btn-info.btn-sm
-                            | Send
+                    .input-group
+                      input#btn-input.borderless.form-control.form-control-sm(type='text', placeholder='Type your message here...')
+                      button#btn-chat.btn.btn-info.btn-sm.ml-3
+                        | Send
 
-          
+
+
+          //- End Html
           script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
           script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl', crossorigin='anonymous')
           
