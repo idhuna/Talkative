@@ -31,15 +31,21 @@ $('#join').click(() => {
   console.log("join!!")
 })
 
-$('#addTopicBtn').click(() => {
+$('#createGroup').submit((e) => {
   console.log("createGroup")
+  e.preventDefault()
   let groupName = $('#nameTopic').val()
-  fetch('./group/createGroup',{
+  fetch('group/creategroup',{
     method: "POST",
-    body: JSON.stringify(groupName,clientID)
-  }).then(data => {
-    console.log("createGroup data back",data)
-  })
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      groupName:groupName,
+      clientID:clientID
+    })
+  }).then(res => res.text()).then(data => console.log(data))
 })
 
 const genGroup = () => {

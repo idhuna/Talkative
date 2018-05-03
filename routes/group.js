@@ -12,6 +12,7 @@ function UserException(code, message){
 
 //we assume user who created group must be in that group
 router.post('/creategroup', async function (req, res) {
+    console.log(req.body)
     const {groupName, clientID} = req.body;
 
     console.log(groupName, clientID)
@@ -47,7 +48,8 @@ router.post('/creategroup', async function (req, res) {
     }
     catch(err) {
         if(err.name === 'NullUserError'){
-            res.status('404').send(err.message);
+            // res.status('404').send(err.message);
+            res.status('400').send(err);
         }
         else if(err.name === 'BulkWriteError'){
             res.status('403').send('group name exists')
