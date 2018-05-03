@@ -25,18 +25,6 @@ module.exports = function() {
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, '../public')));
     
-    
-
-<<<<<<< HEAD
-    app.use('/',indexRouter)
-    app.use('/users',usersRouter)
-    // app.use('/group',groupRouter)
-=======
-    var indexRouter = require('../routes/index');
-    var usersRouter = require('../routes/users');
-    var groupRouter = require('../routes/group');
->>>>>>> cee415ff1c40d02ad29d07202c91597546e3f4ea
-    
     app.use('/', indexRouter);
     app.use('/users', usersRouter);
     app.use('/group', groupRouter);
