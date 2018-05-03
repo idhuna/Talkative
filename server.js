@@ -6,6 +6,7 @@ var mongoose
 try{
   mongoose = require('./config/config');
 }catch(e){
+  console.log("Falling to default mongoose")
   mongoose = require('./config/mongoose')
 }
 
@@ -18,6 +19,7 @@ app.listen(port);
 
 console.log("Server is listening at http://localhost:" + port);
 console.log("Server mode: " + process.env.NODE_ENV);
+
 
 /**
  * Normalize a port into a number, string, or false.
