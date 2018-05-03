@@ -27,17 +27,27 @@ block content
               + '  <button type="button" class="close" aria-label="Close">'
               + '       <span aria-hidden="true">&times;</span>'
               + '    </button>'
-              + '  <div class="my-auto list-group">'
-              + '  </div>'
               + '</div>'
               + '<div class="d-flex">'
               + '<p class="mb-1" style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;">'+lastChat+'</p>' 
+              + '  <div class="my-auto list-group">'
               + '    <small style=" width: 74px;">'+time+'</small>' // Date
               + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read 
+               + '  </div>'
               + '</div>'
               + '</a>'
             );
-            $("#id"+topic).click()
+            $('#topicList button').each(function() {
+                console.log("GG",$(this).text())
+                $(this).on("click",function() {
+                    $(this).parents("a").remove();
+                    console.log("right");
+                });
+            });
+              /* $( this ).on("click", ".close" , function(){
+                    console.log("imba",$(this).text())
+                    $(this).parents("a").empty();
+                }); */
           })
           })
       style.
@@ -63,31 +73,6 @@ block content
             margin: 0;
             padding: 0;
         }
-
-        .chat li
-        {
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px dotted #B3A9A9;
-        }
-
-        .chat li.left .chat-body
-        {
-            margin-left: 60px;
-        }
-
-        .chat li.right .chat-body
-        {
-            margin-right: 60px;
-        }
-
-
-        .chat li .chat-body p
-        {
-            margin: 0;
-            color: #777777;
-        }
-
         .panel .slidedown .glyphicon, .chat .glyphicon
         {
             margin-right: 5px;
@@ -117,6 +102,27 @@ block content
           box-shadow: 0 3px 6px 3px rgb(232, 232, 232);
           margin-bottom:9px;
         }
+        .createTopic{
+            position:fixed;
+            font-size:2em;
+            color:#007bff;
+            margin-right:3px;
+            margin-bottom:3px;
+            bottom:55px;
+            right:725px;
+            z-index:10;
+            opacity:0.5;'
+        }
+        #topicList p{
+            height:2em;
+            line-height: 2em;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow:hidden;
+        }
+        #topicList button{
+            margin-bottom: 6px;
+        }
     body
       .container-fluid
         .row
@@ -131,16 +137,16 @@ block content
               a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#', style='margin-bottom:20px;border-top-right-radius:12px;border-top-left-radius:12px;')
                 .d-flex.w-100.justify-content-between
                     h5.mb-1 Topic 0
-                    button.close(type='button', aria-label='Close',style=" margin-bottom: 6px;")
+                    button.close(type='button', aria-label='Close')
                         span(aria-hidden='true') ×
                 .d-flex
-                    p.mb-1(style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;")
+                    p.mb-1
                       | Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta 
                     .my-auto.list-group
                         small(style=" width: 74px;") 3 days ago
                         span.badge.badge-primary.badge-pill.mx-auto 140
               
-            div(style='position:fixed;font-size:2em;color:#007bff;margin-right:3px;margin-bottom:3px;bottom:55px;right:725px;z-index:10;opacity:0.5;')
+            div.createTopic
                 i.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#topicModal')
             #topicModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
               .modal-dialog(role='document')
