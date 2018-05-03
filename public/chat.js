@@ -14,6 +14,14 @@ socket.on('msg',(groupID,msg) => {
   console.log('receive: ',groupID,msg)
 })
 
+$('#join').click(() => {
+  console.log("join!!")
+})
+
+$('#createGroup').click(() => {
+  console.log("createGroup")
+})
+
 
 $('form').submit(() => {
   let msg = $('#btn-input').val()
