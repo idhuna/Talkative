@@ -22,8 +22,9 @@ const socket = (server) => {
 
     socket.on('msg', (groupID,msg) => {
       console.log(socket.id, "send a message")
-      dbAddMsg(groupID, clientID, msg) // unimplement
-      boardcast(clients,groupID,msg) // unimplement
+      console.log(groupID,msg)
+      // dbAddMsg(groupID, clientID, msg) // unimplement
+      // boardcast(clients,groupID,msg) // unimplement
     })
 
     socket.on('join', (groupID) => {

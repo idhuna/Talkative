@@ -11,35 +11,6 @@ block content
       link(href='https://fonts.googleapis.com/css?family=Quicksand', rel='stylesheet')
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js') 
       //- Run Script
-      script.
-        $(document).ready(function(){
-          var topic = "Topic ";
-          var time = "1 hour ago";
-          var notRead = "xx";
-          var lastChat = "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.";
-          $("#addTopicBtn").click(function(){
-            event.preventDefault();
-            topic = $('#nameTopic').val();
-            $('#nameTopic').val("")
-            $("#topicList").append('<a href="#" id="id'+topic+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
-              + '<div class="d-flex w-100 justify-content-between">'
-              + '<h5 class="mb-1">'+topic+'</h5>' // Topic
-              + '  <button type="button" class="close" aria-label="Close">'
-              + '       <span aria-hidden="true">&times;</span>'
-              + '    </button>'
-              + '  <div class="my-auto list-group">'
-              + '  </div>'
-              + '</div>'
-              + '<div class="d-flex">'
-              + '<p class="mb-1" style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;">'+lastChat+'</p>' 
-              + '    <small style=" width: 74px;">'+time+'</small>' // Date
-              + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read 
-              + '</div>'
-              + '</a>'
-            );
-            $("#id"+topic).click()
-          })
-          })
       style.
         body {
           font-family: 'Quicksand', sans-serif;
@@ -118,11 +89,13 @@ block content
           margin-bottom:9px;
         }
         .createGroup-button{
-          position:fixed;
+          position:absolute;
           font-size:2em;
           color:#007bff;
           z-index:10;
           opacity:0.5;
+          left: 85%;
+          top: 90%;
         }
     body
       .container-fluid
