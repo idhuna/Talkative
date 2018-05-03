@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  style.
+    .logo{
+      font-family: 'Pacifico', cursive;
+      font-weight: 400;
+      font-style: normal;
+      color: rgba(10, 120, 255, 0.84)
+    }
+  .container
+    .row
+      .col-lg-12
+        .jumbotron.d-flex.flex-column(style="align-items:center")
+          h1.mb-5.logo Talkative
+          .col-lg-6
+            form(action="/login", method="post")
+              .form-group.row
+                label.col-form-label.col-lg-3(for="id") ID
+                .col-lg-9
+                  input.form-control(name="id" placeholder="Username")
+              .form-group.row
+                label.col-form-label.col-lg-3(for="id") PASSWORD
+                .col-lg-9
+                  input.form-control(name="id" placeholder="Username")

@@ -3,7 +3,7 @@ let socket = require('socket.io')
 let io = socket()
 
 io.on('connection',(socket) => {
-  console.log('someone have connected')
+  console.log('someone have connected',socket.id)
   socket.on('disconnect',()=>{
     console.log('that one have disconnected')
   })
@@ -12,6 +12,15 @@ io.on('connection',(socket) => {
     console.log('on msg: ' + msg)
     socket.emit('msg','send back from serve: '+msg)
     io.emit('msg','emit from io'+msg)
+  })
+
+  socket.on('join',(msg) => {
+    console.log("user want to join a group")
+    
+  })
+
+  socket.on('break',(msg) => {
+
   })
 })
 

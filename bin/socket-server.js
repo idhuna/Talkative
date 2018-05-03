@@ -1,2 +1,5 @@
 let {io} = require('../socket.app')
-io.listen(3002)
+let port = 3002
+
+io.listen(port)
+console.log(`socket listening at port ${port}`)

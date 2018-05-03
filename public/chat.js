@@ -1,14 +1,15 @@
 console.log('from chat.js')
-var socket = io('http://localhost:3002/')
+var socket = io('http://localhost:3000/')
 
 socket.on('connect', () => {
   console.log(`we're connected`, socket.connected)
-  console.log(socket)
+  console.log("this is our socket",socket)
 })
 
-socket.on('roomOnly',(msg) => {
-  console.log('from room',msg)
+socket.on('disconnect', () => {
+  console.log(`we're disconnected`)
 })
+
 socket.on('msg',(msg) => {
   console.log('receive: ',msg)
 })
