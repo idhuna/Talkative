@@ -78,14 +78,35 @@ router.post('/joingroup', async function (req, res, next) {
 router.post('/leavegroup', async function (req, res, next) {
   const { clientID, groupName } = req.body;
   try {
+
+    let requestGroup = await Group.findOne({'groupName':groupName});
+    let requestClient = await Client.findOne({'clientID':clientID});
+
+
+    if(!requestGroup || !requestClient){
+      throw {
+        'name' : 'NullRequestError',
+        'message' : 'Requested group or client is not found'
+      }
+    }
+    else if(!requestClient.joinedGroups.includes(groupName) || !requestGroup.members.includes(clientID)){
+      throw {
+        'name' : 'NotExistError',
+        'message' : 'Either user is not in the group or group does not see client as their user'
+      }
+    }
+    
     console.log(clientID, groupName)
-    await Group.findOneAndUpdate({ groupName: groupName }, { $pull: { members: clientID } });
-    await Client.findOneAndUpdate({ clientID: clientID }, { $pull: { subscribedGroups: groupName } });
-    res.send("leave")
+    await Promise.all([Group.update(requestGroup, {$pull: {members: clientID}}),
+                        Client.update(requestClient, {$pull: {joinedGroups: groupName}})
+                      ]);
+      
+    res.send('client have left the group')
   }
   catch (err) {
 
     console.log(err);
+    res.send(err);
   }
 });
 
