@@ -160,10 +160,6 @@ router.post('/readallmessage', async function (req, res, next) {
   Message.find({ groupName: groupName }, async function (err, messages) {
     var msgList = [];
 
-    messages.forEach(function (msg) {
-      var obj = { id: msg._id, senderID: msg.senderID, text: msg.text }
-      msgList.push(obj)
-    });
 
     await Client.findOne({ clientID: clientID }, async function (err, user) {
       console.log(user)
@@ -179,29 +175,29 @@ router.post('/readallmessage', async function (req, res, next) {
       if ((user.break[index]) === 'false') {
         var size = user.joinedGroups.length
         var lastsmgs = []
-        user.lastmsg[index] = (msgList[msgList.length - 1].id)
+        user.lastmsg[index] = (messages[messages.length - 1].id)
         console.log(111)
         for (var i = 0; i < size; i++) {
           if (i == index) {
-            lastsmgs.push((msgList[msgList.length - 1].id))
+            lastsmgs.push((messages[messages.length - 1].id))
           } else {
             lastsmgs.push(user.lastmsg[i])
           }
         }
         await Client.findOneAndUpdate({ clientID: clientID }, { $set: { lastmsg: lastsmgs } });
         console.log(9999999)
-        res.send(msgList);
+        res.send(messages);
       }
       else {
         console.log(2222)
 
-        for (var i = 0; i < msgList.length; i++) {
-          if (String(user.lastmsg[index]) === String(msgList[i].id)) {
+        for (var i = 0; i < messages.length; i++) {
+          if (String(user.lastmsg[index]) === String(messages[i].id)) {
             console.log('index ' + i)
-            msgs.push(msgList[i])
+            msgs.push(messages[i])
             break
           } else {
-            msgs.push(msgList[i])
+            msgs.push(messages[i])
           }
           console.log(i)
         }
