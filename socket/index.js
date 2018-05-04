@@ -27,15 +27,19 @@ const socket = (server) => {
       socket.cid = clientID
       socket.joinedGroups = await fetchPOST('users/joined',{clientID})
       console.log(socket.joinedGroups)
+      let msges = {}
       socket.joinedGroups.forEach(async groupName => {
         socket.join(groupName)
+        //let msges["groupName"] = fetchPOST('users/readallmessage',{groupName:groupName,clientID:socket.cid})
+        console.log("fetch messages",msges)
       });
-      fetchPOST('users/readallmessage',{groupName:socket.joinedGroups[0]})
+      socket.msges = msges
+      console.log("socket msges",socket.msges)
       
       socket.emit('groups',socket.joinedGroups)
       clients.push(socket)
       console.log("clientID set", socket.cid)
-      console.log(clients.length)
+      console.log("clients length",clients.length)
     }
     
     const removeClient = (client) => clients.splice(clients.indexOf(socket))

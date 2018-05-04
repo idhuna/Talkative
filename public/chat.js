@@ -46,15 +46,24 @@ $('#join').click(() => {
   console.log("join!!")
 })
 
+function sendMSG(){
+  addMyChat()
+  let msg = $('#btn-input').val()
+  let groupName = $('#chatHeader').text()
+  console.log("sending...",msg)
+  socket.emit('msg',groupName,clientID,msg)
+  $('#btn-input').val('')
+}
+
 $(document).ready(function(){
     console.log("doc rdy");
+    let msg
     $('#btn-chat').click(() =>{
-        socket.emit('msg',"hello",clientID,"some msg")
-        addMyChat();
+      sendMSG()
     })
     $('#btn-input').keypress(function(e) {
-    if(e.which == 13) {
-        addAnotherChat();
+      if(e.which == 13) {
+          sendMSG()
         }
     });
 })

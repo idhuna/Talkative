@@ -67,17 +67,9 @@ router.post('/creategroup', async function (req, res) {
 
 });
 
-<<<<<<< Updated upstream
 router.post('/all',async (req,res) => {
     let groups = await Group.find()
     res.json(groups)
-=======
-router.get('/all', async (req, res) => {
-    let groups = await Group.find()
-    console.log(groups)
-    let result = { data: "still implementing" }
-    res.json(result)
->>>>>>> Stashed changes
 })
 
 
