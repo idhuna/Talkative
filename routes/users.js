@@ -165,17 +165,35 @@ router.post('/readallmessage', async function (req, res, next) {
     });
 
     await Client.findOne({ clientID: clientID }, async function (err, user) {
+      console.log(user)
       var msgs = []
-      if (user.break == null || !(user.break)) {
-        console.log('check' + msgList[msgList.length - 1].id)
-        await Client.findOneAndUpdate({ clientID: clientID }, { $set: { lastmsg: msgList[msgList.length - 1].id } });
+      var index = 0
+      for (var i = 0; i < user.joinedGroups.length; i++) {
+        if (user.joinedGroups[i] === groupName) {
+          index = i
+          break
+        }
+      }
+
+      if (!(user.break[index])) {
+        var size = user.joinedGroups.length
+        var lastsmgs = []
+        user.lastmsg[index] = (msgList[msgList.length - 1].id)
+
+        for (var i = 0; i < size; i++) {
+          if (i == index) {
+            lastsmgs.push((msgList[msgList.length - 1].id))
+          } else {
+            lastsmgs.push(user.lastmsg[i])
+          }
+        }
+        await Client.findOneAndUpdate({ clientID: clientID }, { $set: { lastmsg: lastsmgs } });
+
         res.send(msgList);
       }
       else {
-        console.log(msgList.length)
-        console.log(user.lastmsg)
         for (var i = 0; i < msgList.length; i++) {
-          if (String(user.lastmsg) == String(msgList[i].id)) {
+          if (String(user.lastmsg[index]) === String(msgList[i].id)) {
             console.log('index ' + i)
             msgs.push(msgList[i])
             break
@@ -217,24 +235,40 @@ router.post('/getunread', async function (req, res, next) {
 });
 
 router.post('/break', async function (req, res, next) {
-  const { clientID } = req.body;
+  const { clientID, groupName } = req.body;
   let a = await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: true } });
   res.send(a)
 });
+
 router.post('/unbreak', async function (req, res, next) {
-  const { clientID } = req.body;
+  const { clientID, groupName } = req.body;
 
-  Message.find({ groupName: groupName }, async function (err, messages) {
+  await Message.find({ groupName: groupName }, async function (err, messages) {
     var msgList = [];
-
     messages.forEach(function (msg) {
       var obj = { id: msg._id, senderID: msg.senderID, text: msg.text }
       msgList.push(obj)
     });
-    let a = await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: false, lastmsg: msgList[msgList.length - 1] } });
+    // console.log(msgList)
+    await Client.findOne({ clientID: clientID }, async function (err, user) {
+      console.log(user)
+      var msgs = []
+      var breaks = [];
+      for (var i = 0; i < user.joinedGroups.length; i++) {
+        if (user.joinedGroups[i] === groupName) {
+          breaks.push(false)
+          msgs.push(msgList[msgList.length - 1].id)
+        } else {
+          breaks.push(user.break[i])
+          msgs.push(msgList[i])
+        }
+      }
 
 
+      res.send(await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: breaks, lastmsg: msgs } }))
+
+
+    });
   });
-  res.send(a)
-});
+})
 module.exports = router;
