@@ -36,10 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
 app.use('/', indexRouter);
-
-console.log(indexRouter);
 app.use('/login', loginRouter);
-
 app.use('/group', groupRouter);
 
 // catch 404 and forward to error handler

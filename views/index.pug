@@ -10,46 +10,7 @@ block content
       link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.10/css/all.css', integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg', crossorigin='anonymous')
       link(href='https://fonts.googleapis.com/css?family=Quicksand', rel='stylesheet')
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js') 
-      //- Run Script
-      script.
-        $(document).ready(function(){
-          var topic = "Topic ";
-          var time = "1 hour ago";
-          var notRead = "xx";
-          var lastChat = "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.";
-          $("#addTopicBtn").click(function(){
-            event.preventDefault();
-            topic = $('#nameTopic').val();
-            $('#nameTopic').val("")
-            $("#topicList").append('<a href="#" id="id'+topic+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
-              + '<div class="d-flex w-100 justify-content-between">'
-              + '<h5 class="mb-1">'+topic+'</h5>' // Topic
-              + '  <button type="button" class="close" aria-label="Close">'
-              + '       <span aria-hidden="true">&times;</span>'
-              + '    </button>'
-              + '</div>'
-              + '<div class="d-flex">'
-              + '<p class="mb-1" style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;">'+lastChat+'</p>' 
-              + '  <div class="my-auto list-group">'
-              + '    <small style=" width: 74px;">'+time+'</small>' // Date
-              + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read 
-               + '  </div>'
-              + '</div>'
-              + '</a>'
-            );
-            $('#topicList button').each(function() {
-                console.log("GG",$(this).text())
-                $(this).on("click",function() {
-                    $(this).parents("a").remove();
-                    console.log("right");
-                });
-            });
-              /* $( this ).on("click", ".close" , function(){
-                    console.log("imba",$(this).text())
-                    $(this).parents("a").empty();
-                }); */
-          })
-          })
+      
       style.
         body {
           font-family: 'Quicksand', sans-serif;
@@ -77,19 +38,18 @@ block content
         {
             margin-right: 5px;
         }
-
         .panel-body
         {
             overflow-y: scroll;
             height: 250px;
         }
         #scrollbar{
-          height:656px;
-          overflow:auto;
+            height:656px;
+            overflow:auto;
         }
         #scrollbarBody{
-          height:496px;
-          overflow:auto;
+            height:496px;
+            overflow:auto;
         }
         .borderless{
           border : hidden;
@@ -102,7 +62,7 @@ block content
           box-shadow: 0 3px 6px 3px rgb(232, 232, 232);
           margin-bottom:9px;
         }
-        .createTopic{
+        /* .createTopic{
             position:fixed;
             font-size:2em;
             color:#007bff;
@@ -112,7 +72,8 @@ block content
             right:725px;
             z-index:10;
             opacity:0.5;'
-        }
+        } */
+        #unTopicList p, 
         #topicList p{
             height:2em;
             line-height: 2em;
@@ -122,6 +83,36 @@ block content
         }
         #topicList button{
             margin-bottom: 6px;
+        }
+        .createGroup-button{
+          position:absolute;
+          font-size:3em;
+          color:#007bff;
+          z-index:10;
+          opacity:0.5;
+          left: 85%;
+          top: 90%;
+        }
+        .createGroup-buttonGroup{
+          position:absolute;
+          font-size:3em;
+          color:#007bff;
+          z-index:10;
+          opacity:0.5;
+          left: 70%;
+          top: 90%;
+        }
+        #topicList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
+            margin-bottom:20px;
+            border-top-right-radius:12px;
+            border-top-left-radius:12px;
+        }
+        #unTopicList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
+            margin-bottom:20px;
+            border-top-right-radius:12px;
+            border-top-left-radius:12px;
+            background-color: rgb(221, 221, 221);
+            opacity: 0.70;
         }
     body
       .container-fluid
@@ -133,21 +124,34 @@ block content
               i.fas.fa-user-plus
           //- Second Col
           #scrollbar.col-md-5
-            #topicList.list-group.md-3
-              a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#', style='margin-bottom:20px;border-top-right-radius:12px;border-top-left-radius:12px;')
-                .d-flex.w-100.justify-content-between
-                    h5.mb-1 Topic 0
-                    button.close(type='button', aria-label='Close')
-                        span(aria-hidden='true') ×
-                .d-flex
-                    p.mb-1
-                      | Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta 
-                    .my-auto.list-group
-                        small(style=" width: 74px;") 3 days ago
-                        span.badge.badge-primary.badge-pill.mx-auto 140
-              
-            div.createTopic
-                i.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#topicModal')
+            #topicList.list-group.md-5  
+                h3.mb-1.text-muted Subscribed
+                a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#')
+                    .d-flex.w-100.justify-content-between
+                        h5.mb-1 Topic 0
+                        button.close(type='button', aria-label='Close')
+                            span(aria-hidden='true') ×
+                    .d-flex
+                        p.mb-1
+                          | Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta 
+                        .my-auto.list-group
+                            small(style=" width: 74px;") 3 days ago
+                            span.badge.badge-primary.badge-pill.mx-auto 140
+            #unTopicList.list-group.mt-3  
+                h3.mb-1.text-muted Unsubscribed
+                a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#')
+                    .d-flex.w-100.justify-content-between
+                        h5.mb-1 Topic 1
+                        button.close(type='button', aria-label='Close')
+                            span(aria-hidden='true') ×
+                    .d-flex
+                        p.mb-1
+                          | Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta 
+                        .my-auto.list-group
+                            small(style=" width: 74px;") 30 days ago
+                            span.badge.badge-primary.badge-pill.mx-auto 10
+            i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#topicGroupModal')
+            i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#topicModal')
             #topicModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
               .modal-dialog(role='document')
                 .modal-content
@@ -171,18 +175,18 @@ block content
                 .card.card-primary.scrollbar-morpheus-den.borderless
                   .card-header
                     div
-                        strong(style="font-size:29px;") 
+                        strong#chatHeader(style="font-size:29px;") 
                             | Chat
-                        a.text-muted.float-right(href='http://www.jquery2dotnet.com',style="margin-top: 13px;")
+                        a.text-muted.float-right(href='#',style="margin-top: 13px;")
                             i.fas.fa-sign-out-alt.fa-lg.mr-3
                                 //- | Leave Group
-                        a.text-muted.float-right(href='http://www.jquery2dotnet.com',style=" margin-top: 13px;")
+                        a.text-muted.float-right(href='#',style=" margin-top: 13px;")
                             i.fas.fa-sync-alt.fa-lg.mr-3
                             //- | Refresh
                 
                   #scrollbarBody.rcorners
                     div
-                      ul.chat
+                      ul#chatMessage.chat
                         //- left
                         li.mb-3(style="border:hidden;")
                           .d-flex.flex-row
@@ -249,7 +253,7 @@ block content
                                 | 13 mins ago
                   .card-footer
                     .input-group
-                      input#btn-input.borderless.form-control.form-control-sm(type='text', placeholder='Type your message here...')
+                      input#btn-input.borderless.form-control.form-control-sm(type='text', placeholder='Type your message here...',style="outline:none")
                       button#btn-chat.btn.btn-info.btn-sm.ml-3
                         | Send
 
