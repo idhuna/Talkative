@@ -162,7 +162,7 @@ router.post('/readallmessage', async function (req, res, next) {
 
     await Client.findOne({ clientID: clientID }, async function (err, user) {
       var msgs = []
-      var index = 0
+      var index = -1
       for (var i = 0; i < user.joinedGroups.length; i++) {
         if (user.joinedGroups[i] === groupName) {
           index = i

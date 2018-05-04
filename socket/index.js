@@ -10,17 +10,26 @@
 
 let fetch = require('node-fetch')
 let _url = 'http://localhost:3000/'
+// let _url = 'http://localhost/'
 
 let clients = []
+let groups = []
 let buffer = []
 
-const socket = (server) => {
+process.on('unhandledRejection', error => {
+  // Will print "unhandledRejection err is not defined"
+  console.log('unhandledRejection', error.message)
+  console.error(error)
+});
+
+const socket = async (server) => {
   let io = require('socket.io')(server)
   console.log("here in socket");
-
-
+  groups = await fetchPOST('group/all',{})
+  
+  
   io.on('connect', socket => {
-
+    
     console.log(socket.id, 'have connected')
     
     const init = async (clientID) => {
@@ -28,7 +37,8 @@ const socket = (server) => {
       socket.joinedGroups = await fetchPOST('users/joined',{clientID})
       console.log(socket.joinedGroups)
       var msges = {}
-      let arr = await Promise.all(socket.joinedGroups.map(async groupName => {
+      console.log("groups",groups)
+      let arr = await Promise.all(groups.map(async groupName => {
         socket.join(groupName)
         msges[groupName] = await fetchPOST('users/readallmessage',{groupName:groupName,clientID:socket.cid})
         return msges
@@ -36,8 +46,8 @@ const socket = (server) => {
       msges = arr[arr.length-1]
       console.log('initializing')
       
-      socket.emit('groups',socket.joinedGroups)
       socket.emit('init',msges)
+      socket.emit('groups',socket.joinedGroups)
       clients.push(socket)
       console.log("clientID set", socket.cid)
       console.log("clients length",clients.length)
@@ -51,11 +61,6 @@ const socket = (server) => {
     const dbAddMember = (groupName) => {} // unimplement
     const dbRemoveMember = (groupName) => {} // unimplement
     
-    const initializeGroups = () => {
-      let groups = getSubscribeGroups() // unimplement
-      socket.emit('showGroups', groups)
-    }
-     
     const dbsendMSG = async (groupName,senderID,text) => {
       // update mongo
       console.log("updating mongo")
@@ -67,7 +72,7 @@ const socket = (server) => {
     }
     
     const notify = (groupName) => {
-      console.log(clients.length)
+      console.log("clients.length",clients.length)
       clients.forEach(async client => {
         let msg = await fetchPOST('users/readallmessage',{groupName,clientID:client.cid})
         console.log("notifying", client.id)
@@ -75,15 +80,7 @@ const socket = (server) => {
       })
     }
     
-    const fetchPOST = (url,body) => {
-      return fetch(_url + url,{
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(body)
-      }).then(res => res.json())
-    }
+    
 
     socket.on('clientID', (clientID) => {
       init(clientID)
@@ -94,11 +91,16 @@ const socket = (server) => {
       removeClient(socket)
     })
 
+    socket.on('newGroup', groupName => {
+      groups.push(groupName)
+      socket.broadcast.emit('newGroup',groupName)
+    })
+
     socket.on('msg', async (groupName,clientID,text) => {
       console.log(socket.id, "send a message")
       buffer.push({groupName,clientID,text})
       while(buffer.length > 0) {
-        let {groupName, clientID, text} = buffer.pop()
+        let {groupName, clientID, text} = buffer.shift()
         await dbsendMSG(groupName,clientID,text)
         await notify(groupName,clientID)
       }
@@ -106,15 +108,20 @@ const socket = (server) => {
       // boardcast(clients,groupName,msg) // unimplement
     })
 
+    socket.on('getmsg', async groupName => {
+      let msg = await fetchPOST('users/readallmessage',{groupName,clientID:socket.cid})
+      console.log("updating msg", msg)
+      socket.emit('update',groupName,msg)
+    }) 
+
     socket.on('join', (groupName) => {
       console.log("user want to join a group")
-      dbAddMember(groupName)
+      fetchPOST('users/joingroup',{groupName,clientID:socket.cid})
       joinGroup(groupName)
     })
 
     socket.on('leave', (groupName) => {
       console.log("user want to leave a group")
-      dbRemoveMember(groupName)
       leaveGroup(groupName)
     })
 
@@ -122,6 +129,16 @@ const socket = (server) => {
 
     })
   })
+}
+
+const fetchPOST = (url,body) => {
+  return fetch(_url + url,{
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify(body)
+  }).then(res => res.json())
 }
 
 

@@ -1,5 +1,6 @@
 console.log('from chat.js')
 var socket = io('http://localhost:3000')
+// var socket = io('http://localhost')
 
 async function fetchFromURLtest(){
   let d = await fetch("https://api.chucknorris.io/jokes/random")
@@ -11,10 +12,13 @@ async function fetchGroups(){
   console.log("fetchGroups",groups)
 }
 
+
 // we set these in pug
 console.log("clientID",clientID)
 let msges = {}
+socket.joinedGroups = []
 
+socket.on('test',msg => console.log(msg))
 
 socket.on('connect', () => {
   console.log(`we're connected`, socket.connected)
@@ -52,6 +56,14 @@ socket.on('groups',groups => {
   socket.joinedGroups = groups
   console.log(socket.joinedGroups)
   groups.forEach(group => genGroup(group))
+  Object.keys(socket.msges).forEach(group => {
+    if(!groups.includes(group)) genUnGroup(group)
+  })
+})
+
+socket.on('newGroup',groupName => {
+  console.log('there is new group')
+  genUnGroup(groupName)
 })
 
 $('#join').click(() => {
@@ -102,10 +114,16 @@ const createGroup = () =>{
       groupName:groupName,
       clientID:clientID
     })
-  }).then(res => res.text()).then(data => {
+  }).then(res => res.json()).then(data => {
     console.log(data)
     let groupName = data.groupName
+    socket.emit('msg',groupName,clientID,'I create this group')
+    console.log(socket)
+    
+    socket.joinedGroups.push(groupName)
+    genGroup(groupName)
     socket.emit('newGroup', groupName)
+    socket.emit('getmsg',groupName)
   })
 }
 
@@ -120,12 +138,12 @@ $('#addGroupBtn').click(()=>{
   var group = $('#nameGroup').val()
   if(group.length > 0){
       console.log("hi",group)
-      genGroup();
       createGroup()
   }
 })
 
 async function changeChat(groupName){
+  if(!socket.joinedGroups.includes(groupName)) return
   console.log('changing chat...')
   $('#chatMessage li').remove()
   let msg = socket.msges[groupName]

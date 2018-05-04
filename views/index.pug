@@ -14,72 +14,59 @@ block content
       script.
         clientID="#{clientID}"
     body
-      .d-flex.justify-content-between.align-items-end
-        h1=title
+      .d-flex.justify-content-between.align-items-end.mb-3
+        h1 #{title}
         h3.float-right(style="margin-right:40px") 
           strong
-              | Name : 
+            | Name : 
           small
-              | #{clientID}
+            | #{clientID}
       .container-fluid
         .row
           //- First Col
-          .col-md-1.rcorners.dropShadow(style='background:linear-gradient(234deg, rgba(28, 155, 255, 0.84), #117de7);max-width:5%;')
-            div(style='font-size:25px;color:white;margin-right:20px;')
-              i.fas.fa-user-plus
-              i.fas.fa-user-plus
-          //- Second Col
-          #scrollbar.col-md-5
-            #groupList.list-group.md-5  
-            #unGroupList.list-group.mt-3  
-                h3.mb-1.text-muted Unsubscribed
-                a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#')
-                    .d-flex.w-100.justify-content-between
-                        h5.mb-1 Group 1
-                        button.close(type='button', aria-label='Close')
-                            span(aria-hidden='true') ×
-                    .d-flex
-                        p.mb-1
-                          | Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta 
-                        .my-auto.list-group
-                            small(style=" width: 74px;") 30 days ago
-                            span.badge.badge-primary.badge-pill.mx-auto 10
-            i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#groupGroupModal')
-            #groupGroupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='groupModalLabel', aria-hidden='true')
-              .modal-dialog(role='document')
-                .modal-content
-                  .modal-header
-                    h5#groupModalLabel.modal-title Join group
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                      span(aria-hidden='true') ×
-                  form#joinGroup
-                    .modal-body
-                      .form-group
-                        label.col-form-label(for='nameGroup') Group
-                        input#joinedGroup.form-control(type='text', placeholder='Group')
-                    .modal-footer
-                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                      button#joinGroupBtn.btn.btn-primary(type='submit', data-dismiss='modal') Join
+          .col-md-5
+            .d-flex(style='flex-direction:column;')
+              #scrollbar(style="flex:20; height:9")
+                #groupList.list-group.md-5  
+                    h3.mb-1.text-muted Subscribed
+                #unGroupList.list-group.mt-3  
+                    h3.mb-1.text-muted Unsubscribed
+              div(style="flex:1;")
+                i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#groupGroupModal')
+                #groupGroupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='groupModalLabel', aria-hidden='true')
+                  .modal-dialog(role='document')
+                    .modal-content
+                      .modal-header
+                        h5#groupModalLabel.modal-title Join group
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                          span(aria-hidden='true') ×
+                      form#joinGroup
+                        .modal-body
+                          .form-group
+                            label.col-form-label(for='nameGroup') Group
+                            input#joinedGroup.form-control(type='text', placeholder='Group')
+                        .modal-footer
+                          button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                          button#joinGroupBtn.btn.btn-primary(type='submit', data-dismiss='modal') Join
 
-            i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#groupModal')
-            #groupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='groupModalLabel', aria-hidden='true')
-              .modal-dialog(role='document')
-                .modal-content
-                  .modal-header
-                    h5#groupModalLabel.modal-title Create a group
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                      span(aria-hidden='true') ×
-                  .modal-body
-                    form#createGroup
-                      .form-group
-                        label.col-form-label(for='nameGroup') Group
-                        input#nameGroup.form-control(type='text', placeholder='Group')
-                  .modal-footer
-                    button#addGroupBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-
-          //- Third column
-          .col-md-6.rcorners.dropShadow
+                i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#groupModal')
+                #groupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='groupModalLabel', aria-hidden='true')
+                  .modal-dialog(role='document')
+                    .modal-content
+                      .modal-header
+                        h5#groupModalLabel.modal-title Create a group
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                          span(aria-hidden='true') ×
+                      .modal-body
+                        form#createGroup
+                          .form-group
+                            label.col-form-label(for='nameGroup') Group
+                            input#nameGroup.form-control(type='text', placeholder='Group')
+                      .modal-footer
+                        button#addGroupBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
+                        button.btn.btn-secondary(type='button', data-dismiss='modal') Close         
+          //- Second column
+          .col-md-7.rcorners.dropShadow
             .container
               .row
                 //- .col-lg-12
@@ -102,7 +89,7 @@ block content
                   .card-footer
                     .input-group
                       input#btn-input.borderless.form-control.form-control-sm(type='text', placeholder='Type your message here...',style="outline:none")
-                      button#btn-chat.btn.btn-info.btn-sm.ml-3
+                      button#btn-chat.btn.btn-outline-info.btn-sm.ml-3
                         | Send
 
 

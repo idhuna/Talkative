@@ -69,7 +69,7 @@ router.post('/creategroup', async function (req, res) {
 
 router.post('/all', async (req, res) => {
     let groups = await Group.find()
-    res.json(groups)
+    res.json(groups.map(group => group.groupName))
 })
 
 
