@@ -7,7 +7,7 @@ async function fetchFromURLtest(){
 }
 
 async function fetchGroups(){
-  let groups = await fetch("group/allgroups").then(res => res.json())
+  let groups = await fetch("group/all").then(res => res.json())
   console.log("fetchGroups",groups)
 }
 
@@ -34,6 +34,7 @@ $('#join').click(() => {
 $(document).ready(function(){
     console.log("doc rdy");
     $('#btn-chat').click(() =>{
+        socket.emit('msg',"some group",clientID)
         addMyChat();
     })
     $('#btn-input').keypress(function(e) {
@@ -41,24 +42,24 @@ $(document).ready(function(){
         addAnotherChat();
         }
     });
+    $('#createGroup').submit((e) => {
+      console.log("createGroup")
+      e.preventDefault()
+      let groupName = $('#nameTopic').val()
+      fetch('group/creategroup',{
+        method: "POST",
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          groupName:groupName,
+          clientID:clientID
+        })
+      }).then(res => res.text()).then(data => console.log(data))
+    })
 })
 
-$('#createGroup').submit((e) => {
-  console.log("createGroup")
-  e.preventDefault()
-  let groupName = $('#nameTopic').val()
-  fetch('group/creategroup',{
-    method: "POST",
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      groupName:groupName,
-      clientID:clientID
-    })
-  }).then(res => res.text()).then(data => console.log(data))
-})
 
 const genGroup = () => {
   var topic = "Topic ";
