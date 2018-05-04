@@ -13,6 +13,8 @@ async function fetchGroups(){
 
 // we set these in pug
 console.log("clientID",clientID)
+let msges = {}
+
 
 socket.on('connect', () => {
   console.log(`we're connected`, socket.connected)
@@ -29,6 +31,11 @@ socket.on('reconnect_attempt', () => {
 
 socket.on('msg',(groupName,msg) => {
   console.log('receive: ',groupName,msg)
+
+})
+
+socket.on('init',msges => {
+  socket.msges = msges
 })
 
 socket.on('update',groupName => {
@@ -47,11 +54,16 @@ $('#join').click(() => {
 })
 
 function sendMSG(){
-  addMyChat()
   let msg = $('#btn-input').val()
   let groupName = $('#chatHeader').text()
+  if(groupName === " Select Some Chat"){
+    alert("Please chose group to send some message")
+    $('#btn-input').val('')
+    return
+  }
   console.log("sending...",msg)
   socket.emit('msg',groupName,clientID,msg)
+  addMyChat()
   $('#btn-input').val('')
 }
 
@@ -66,6 +78,10 @@ $(document).ready(function(){
           sendMSG()
         }
     });
+    $('.joinedGroup').click(() => {
+      console.log('Click!!')
+      console.log("click sub",$(this).text())
+    })
 })
 
 const createGroup = () =>{

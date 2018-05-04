@@ -40,7 +40,7 @@ const genGroup = (group) => {
   var notRead = "xx";
   var lastChat = "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.";
   event.preventDefault();
-  $("#groupList").append('<a href="#" id="idGroup'+group+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
+  $("#groupList").append('<a href="#" id="idGroup'+group+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow joinedGroup" style="margin-bottom:20px">'
     + '<div class="d-flex w-100 justify-content-between">'
     + '<h5 class="mb-1">'+group+'</h5>' // Group
     +' <div class="d-flex" style="width:10px;"></div><i class="fas fa-bell" id="noti" style="padding-top:1%"></i><div class="d-flex w-75"></div>'
