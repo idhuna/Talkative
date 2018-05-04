@@ -7,7 +7,7 @@ async function fetchFromURLtest(){
 }
 
 async function fetchGroups(){
-  let groups = await fetch("group/allgroups").then(res => res.json())
+  let groups = await fetch("group/all").then(res => res.json())
   console.log("fetchGroups",groups)
 }
 
@@ -34,6 +34,7 @@ $('#join').click(() => {
 $(document).ready(function(){
     console.log("doc rdy");
     $('#btn-chat').click(() =>{
+        socket.emit('msg',"some group",clientID)
         addMyChat();
     })
     $('#btn-input').keypress(function(e) {

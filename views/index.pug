@@ -177,14 +177,14 @@ block content
                     h5#topicModalLabel.modal-title Create a topic
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                       span(aria-hidden='true') ×
-                  form#createGroup
-                    .modal-body
+                  .modal-body
+                    form#createGroup
                       .form-group
                         label.col-form-label(for='nameTopic') Topic
                         input#nameTopic.form-control(type='text', placeholder='Topic')
-                    .modal-footer
-                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                      button#addTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
+                  .modal-footer
+                    button#addTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 
           //- Third column
           .col-md-6.rcorners.dropShadow
