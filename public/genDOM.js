@@ -27,9 +27,14 @@ $('#joinedGroup').submit((e) => {
 })
 
 $('#joinTopicBtn').click(()=>{
-    var topic = $('#joinedTopic').val 
+    var topic = $('#joinedTopic').val()
     console.log("hi",topic)
     if(topic.length > 0){
         joinGroup()
     }
+})
+
+$('#noti').click(()=>{
+    console.log("close noti")
+    $('#noti').toggleClass("fa-bell fa-bell-slash")
 })
