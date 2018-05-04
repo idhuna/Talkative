@@ -80,7 +80,8 @@ $(document).ready(function(){
     });
     $('.list-group').on('click','a.joinedGroup',() => {
       console.log('rerender chat')
-      console.log("click sub",$(this).text())
+      let id = $(this)[0].activeElement.id
+      let groupName = id.substr(7)
     })
 })
 
