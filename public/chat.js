@@ -44,7 +44,7 @@ socket.on('update',(groupName,msg) => {
   console.log('we have to update this group',groupName)
   console.log('new msg',msg)
   socket.msges[groupName] = msg
-  changeChat(groupName)
+  if(groupName === $('#chatHeader').text())changeChat(groupName)
 })
 
 socket.on('groups',groups => {
