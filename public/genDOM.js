@@ -1,13 +1,13 @@
-// $('#addTopicBtn').click(()=>{
-//     var topic = $('#nameTopic').val 
-//     console.log("hi",topic)
-//     if(topic.length > 0){
+// $('#addGroupBtn').click(()=>{
+//     var group = $('#nameGroup').val
+//     console.log("hi",group)
+//     if(group.length > 0){
 //         createGroup
 //     }
 // })
 
 const joinGroup = () =>{
-    let groupName = $('#joinedTopic').val()
+    let groupName = $('#joinedGroup').val()
     fetch('users/joingroup',{
       method: "POST",
       headers: {
@@ -26,10 +26,15 @@ $('#joinedGroup').submit((e) => {
     joinGroup()
 })
 
-$('#joinTopicBtn').click(()=>{
-    var topic = $('#joinedTopic').val 
-    console.log("hi",topic)
-    if(topic.length > 0){
+$('#joinGroupBtn').click(()=>{
+    var group = $('#joinedGroup').val()
+    console.log("hi",group)
+    if(group.length > 0){
         joinGroup()
     }
+})
+
+$('#noti').click(()=>{
+    console.log("close noti")
+    $('#noti').toggleClass("fa-bell fa-bell-slash")
 })

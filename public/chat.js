@@ -45,7 +45,7 @@ $(document).ready(function(){
 })
 
 const createGroup = () =>{
-  let groupName = $('#nameTopic').val()
+  let groupName = $('#nameGroup').val()
   fetch('group/creategroup',{
     method: "POST",
     headers: {
@@ -66,10 +66,11 @@ $('#createGroup').submit((e) => {
 })
 
 
-$('#addTopicBtn').click(()=>{
-  var topic = $('#nameTopic').val
-  if(topic.length > 0){
-      console.log("hi",topic)
+$('#addGroupBtn').click(()=>{
+  var group = $('#nameGroup').val()
+  if(group.length > 0){
+      console.log("hi",group)
+      genGroup();
       createGroup()
   }
 })
@@ -86,6 +87,7 @@ const genGroup = () => {
   $("#groupList").append('<a href="#" id="idGroup'+group+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
     + '<div class="d-flex w-100 justify-content-between">'
     + '<h5 class="mb-1">'+group+'</h5>' // Group
+    +' <div class="d-flex" style="width:10px;"></div><i class="fas fa-bell" id="noti" style="padding-top:1%"></i><div class="d-flex w-75"></div>'
     + '  <button type="button" class="close" aria-label="Close">'
     + '       <span aria-hidden="true">&times;</span>'
     + '    </button>'
