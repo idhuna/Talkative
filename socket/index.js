@@ -27,18 +27,17 @@ const socket = (server) => {
       socket.cid = clientID
       socket.joinedGroups = await fetchPOST('users/joined',{clientID})
       console.log(socket.joinedGroups)
-      let msges = {}
-      socket.joinedGroups.forEach(async groupName => {
+      var msges = {}
+      let arr = await Promise.all(socket.joinedGroups.map(async groupName => {
         socket.join(groupName)
-        //let msges["groupName"] = fetchPOST('users/readallmessage',{groupName:groupName,clientID:socket.cid})
-        console.log("fetch messages",msges)
-      });
-      socket.msges = msges
-      socket.emit('init',socket.msges)
-
-      console.log("socket msges",socket.msges)
+        msges[groupName] = await fetchPOST('users/readallmessage',{groupName:groupName,clientID:socket.cid})
+        return msges
+      }))
+      msges = arr[arr.length-1]
+      console.log('initializing')
       
       socket.emit('groups',socket.joinedGroups)
+      socket.emit('init',msges)
       clients.push(socket)
       console.log("clientID set", socket.cid)
       console.log("clients length",clients.length)

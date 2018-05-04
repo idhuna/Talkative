@@ -35,7 +35,9 @@ socket.on('msg',(groupName,msg) => {
 })
 
 socket.on('init',msges => {
+  console.log("init")
   socket.msges = msges
+  console.log(socket.msges)
 })
 
 socket.on('update',groupName => {
@@ -82,6 +84,7 @@ $(document).ready(function(){
       console.log('rerender chat')
       let id = $(this)[0].activeElement.id
       let groupName = id.substr(7)
+      changeChat(groupName)
     })
 })
 
@@ -154,3 +157,12 @@ const genUnGroup = () => {
     });
 }
 
+async function changeChat(groupName){
+  console.log('changing chat...')
+  $('#chatMessage li').remove()
+  let msg = socket.msges[groupName]
+  msg.forEach(i => {
+    if(i.senderID === clientID) addMyChat(i.senderID,i.text)
+    else addAnotherChat(i.senderID,i.text)
+  })
+}
