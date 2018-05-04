@@ -34,7 +34,7 @@ $('#join').click(() => {
 $(document).ready(function(){
     console.log("doc rdy");
     $('#btn-chat').click(() =>{
-        socket.emit('msg',"some group",clientID)
+        socket.emit('msg',"hello",clientID,"some msg")
         addMyChat();
     })
     $('#btn-input').keypress(function(e) {

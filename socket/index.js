@@ -24,10 +24,9 @@ const socket = (server) => {
       console.log(socket.id, 'have disconnected')
     })
 
-    socket.on('msg', (groupName,msg) => {
+    socket.on('msg', (groupName,clientID,text) => {
       console.log(socket.id, "send a message")
-      console.log(groupName,msg)
-      dbsendMSG(groupName, clientID, msg) // unimplement
+      dbsendMSG(groupName, clientID, text) // unimplement
       // boardcast(clients,groupName,msg) // unimplement
     })
 

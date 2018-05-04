@@ -20,7 +20,7 @@ const initializeGroups = () => {
   socket.emit('showGroups', groups)
 }
  
-const dbsendMSG = async (groupName,senderID,msg) => {
+const dbsendMSG = async (groupName,senderID,text) => {
   // update mongo
   console.log("updating mongo")
   await fetch('http://localhost:3000/users/sendmessage',{
@@ -29,7 +29,7 @@ const dbsendMSG = async (groupName,senderID,msg) => {
       'Content-Type': 'application/json'
     },
     body:JSON.stringify({
-      groupName,senderID,msg
+      groupName,senderID,text
     })
   }).catch(e => console.error(e))
 }
