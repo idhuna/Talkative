@@ -108,4 +108,30 @@ router.post('/sendmessage', async function (req, res, next) {
 
   res.send(newMessage)
 });
+
+router.post('/readallmessage', async function (req, res, next) {
+  const { groupName } = req.body;
+  // res.send(req.body)
+
+
+  Message.find({ groupName: groupName }, function (err, messages) {
+    var msgList = [];
+
+    messages.forEach(function (msg) {
+      var obj = { senderID: msg.senderID, text: msg.text }
+      msgList.push(obj)
+    });
+
+    res.send(msgList);
+  });
+
+  try {
+    await newMessage.save();
+  }
+  catch (err) {
+    console.log(err);
+  }
+
+  res.send(newMessage)
+});
 module.exports = router;

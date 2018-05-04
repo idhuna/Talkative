@@ -20,8 +20,15 @@ var clientSchema = new Schema({
     joinedGroups: {
         type: [String],
         default: null,
+    },
+    lastmsg: {
+        type: Schema.Types.ObjectId,
+        default: null,
+    },
+    break: {
+        type: Boolean,
+        default: false,
     }
-
 });
 
 const Client = mongoose.model('Client', clientSchema);
