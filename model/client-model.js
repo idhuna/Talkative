@@ -22,12 +22,12 @@ var clientSchema = new Schema({
         default: null,
     },
     lastmsg: {
-        type: Schema.Types.ObjectId,
+        type: [Schema.Types.ObjectId],
         default: null,
     },
     break: {
-        type: Boolean,
-        default: false,
+        type: [String],
+        default: null,
     }
 });
 

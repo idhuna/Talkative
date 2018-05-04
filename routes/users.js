@@ -19,6 +19,9 @@ router.post('/createuser', async function (req, res, next) {
     clientID: clientID,
     password: password,
     name: name,
+    joinedGroups: [],
+    lastmsg: [],
+    break: []
   });
   await Client.findOne({ clientID: clientID }, function (err, client) {
     if (err) return handleError(err);
@@ -48,7 +51,7 @@ router.post('/joingroup', async function (req, res, next) {
 
   await Group.findOne({ groupName: groupName }, function (err, group) {
     if (err) return handleError(err);
-    else if(!group){
+    else if (!group) {
       res.status(400).send('group not found');
     }
     console.log('group2234' + group)
@@ -59,9 +62,11 @@ router.post('/joingroup', async function (req, res, next) {
     }
   });
   try {
+
+
     await Promise.all([Group.findOneAndUpdate({ groupName: groupName }, { $push: { members: clientID } }),
-                        Client.findOneAndUpdate({ clientID: clientID }, { $push: { joinedGroups: groupName } })
-                      ]);
+    Client.findOneAndUpdate({ clientID: clientID }, { $push: { joinedGroups: groupName, "joinedGroups": groupName, "lastmsg": null, "break": false } })
+    ]);
     res.send("inserted")
   }
   catch (err) {
@@ -75,29 +80,42 @@ router.post('/leavegroup', async function (req, res, next) {
   const { clientID, groupName } = req.body;
   try {
 
-    let requestGroup = await Group.findOne({'groupName':groupName});
-    let requestClient = await Client.findOne({'clientID':clientID});
+    let requestGroup = await Group.findOne({ 'groupName': groupName });
+    let requestClient = await Client.findOne({ 'clientID': clientID });
 
 
-    if(!requestGroup || !requestClient){
+    if (!requestGroup || !requestClient) {
       throw {
-        'name' : 'NullRequestError',
-        'message' : 'Requested group or client is not found'
+        'name': 'NullRequestError',
+        'message': 'Requested group or client is not found'
       }
     }
-    else if(!requestClient.joinedGroups.includes(groupName) || !requestGroup.members.includes(clientID)){
+    else if (!requestClient.joinedGroups.includes(groupName) || !requestGroup.members.includes(clientID)) {
       throw {
-        'name' : 'NotExistError',
-        'message' : 'Either user is not in the group or group does not see client as their user'
+        'name': 'NotExistError',
+        'message': 'Either user is not in the group or group does not see client as their user'
       }
     }
-    
+
     console.log(clientID, groupName)
-    await Promise.all([Group.update(requestGroup, {$pull: {members: clientID}}),
-                        Client.update(requestClient, {$pull: {joinedGroups: groupName}})
-                      ]);
-      
-    res.send('client have left the group')
+    await Group.findOneAndUpdate({ groupName: groupName }, { $pull: { members: clientID } });
+    // await Client.findOneAndUpdate({ clientID: clientID }, { $pull: { subscribedGroups: groupName } });
+    await Client.findOne({ clientID: clientID }, async function (err, client) {
+      if (err) return handleError(err);
+      var size = client.subscribedGroups.length
+      var joins = []
+      var breaks = []
+      var lastsmgs = []
+      for (var i = 0; i < size; i++) {
+        if (groupName != client.joinedGroups[i]) {
+          joins.push(client.joinedGroups[i])
+          breaks.push(client.break[i])
+          lastsmgs.push(client.lastmsg[i])
+        }
+      }
+      await Client.findOneAndUpdate({ clientID: clientID }, { $set: { joinedGroups: join, break: breaks, lastmsg: lastsmgs } });
+    });
+    res.send("leave")
   }
   catch (err) {
 
@@ -127,13 +145,50 @@ router.post('/sendmessage', async function (req, res, next) {
 });
 
 
-router.post('/joined',async (req,res) => {
-  let {clientID} = req.body
-  let client = await Client.findOne({clientID})
+router.post('/joined', async (req, res) => {
+  let { clientID } = req.body
+  let client = await Client.findOne({ clientID })
   res.json(client.joinedGroups)
 })
 
 router.post('/readallmessage', async function (req, res, next) {
+  const { groupName, clientID } = req.body;
+  // res.send(req.body)
+  Message.find({ groupName: groupName }, async function (err, messages) {
+    var msgList = [];
+
+    messages.forEach(function (msg) {
+      var obj = { id: msg._id, senderID: msg.senderID, text: msg.text }
+      msgList.push(obj)
+    });
+
+    await Client.findOne({ clientID: clientID }, async function (err, user) {
+      var msgs = []
+      if (user.break == null || !(user.break)) {
+        console.log('check' + msgList[msgList.length - 1].id)
+        await Client.findOneAndUpdate({ clientID: clientID }, { $set: { lastmsg: msgList[msgList.length - 1].id } });
+        res.send(msgList);
+      }
+      else {
+        console.log(msgList.length)
+        console.log(user.lastmsg)
+        for (var i = 0; i < msgList.length; i++) {
+          if (String(user.lastmsg) == String(msgList[i].id)) {
+            console.log('index ' + i)
+            msgs.push(msgList[i])
+            break
+          } else {
+            msgs.push(msgList[i])
+          }
+          console.log(i)
+        }
+        res.send(msgs)
+      }
+    });
+  });
+});
+
+router.post('/getunread', async function (req, res, next) {
   const { groupName } = req.body;
   res.send(req.body)
 
@@ -157,5 +212,27 @@ router.post('/readallmessage', async function (req, res, next) {
   }
 
   res.send(newMessage)
+});
+
+router.post('/break', async function (req, res, next) {
+  const { clientID } = req.body;
+  let a = await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: true } });
+  res.send(a)
+});
+router.post('/unbreak', async function (req, res, next) {
+  const { clientID } = req.body;
+
+  Message.find({ groupName: groupName }, async function (err, messages) {
+    var msgList = [];
+
+    messages.forEach(function (msg) {
+      var obj = { id: msg._id, senderID: msg.senderID, text: msg.text }
+      msgList.push(obj)
+    });
+    let a = await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: false, lastmsg: msgList[msgList.length - 1] } });
+
+
+  });
+  res.send(a)
 });
 module.exports = router;
