@@ -174,12 +174,12 @@ router.post('/readallmessage', async function (req, res, next) {
           break
         }
       }
-
-      if (!(user.break[index])) {
+      console.log(user.break[index] === false)
+      if ((user.break[index]) === 'false') {
         var size = user.joinedGroups.length
         var lastsmgs = []
         user.lastmsg[index] = (msgList[msgList.length - 1].id)
-
+        console.log(111)
         for (var i = 0; i < size; i++) {
           if (i == index) {
             lastsmgs.push((msgList[msgList.length - 1].id))
@@ -188,10 +188,12 @@ router.post('/readallmessage', async function (req, res, next) {
           }
         }
         await Client.findOneAndUpdate({ clientID: clientID }, { $set: { lastmsg: lastsmgs } });
-
+        console.log(9999999)
         res.send(msgList);
       }
       else {
+        console.log(2222)
+
         for (var i = 0; i < msgList.length; i++) {
           if (String(user.lastmsg[index]) === String(msgList[i].id)) {
             console.log('index ' + i)
