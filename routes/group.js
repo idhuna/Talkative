@@ -34,7 +34,7 @@ router.post('/creategroup', async function (req, res) {
 
         let newGroup = new Group({
             groupName: groupName,
-            members: [creatorClient._id],
+            members: [clientID],
         });
 
         await Promise.all([newGroup.save(), 
