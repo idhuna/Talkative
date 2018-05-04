@@ -16,10 +16,15 @@ console.log("clientID",clientID)
 
 socket.on('connect', () => {
   console.log(`we're connected`, socket.connected)
+  socket.emit("clientID",clientID)
 })
 
 socket.on('disconnect', () => {
   console.log(`we're disconnected`)
+})
+
+socket.on('reconnect_attempt', () => {
+  console.log('attemp_to_reconnect')
 })
 
 socket.on('msg',(groupName,msg) => {
@@ -28,6 +33,12 @@ socket.on('msg',(groupName,msg) => {
 
 socket.on('update',groupName => {
   console.log('we have to update this group',groupName)
+})
+
+socket.on('groups',groups => {
+  console.log("update groups")
+  socket.joinedGroups = groups
+  updateGroup()
 })
 
 $('#join').click(() => {

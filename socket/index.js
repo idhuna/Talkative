@@ -1,27 +1,82 @@
-let {
-  setSocket,
-  addClient,
-  removeClient,
-  dbsendMSG,
-  dbAddMember,
-  dbRemoveMember,
-  notify
-  } = require('./util')
+// let {
+//   addClient,
+//   removeClient,
+//   dbsendMSG,
+//   dbAddMember,
+//   dbRemoveMember,
+//   notify,
+//   setClientID
+//   } = require('./util')
+
+let fetch = require('node-fetch')
+let _url = 'http://localhost:3000/'
+
+let clients = []
+let buffer = []
 
 const socket = (server) => {
   let io = require('socket.io')(server)
   console.log("here in socket");
 
-  let buffer = []
 
   io.on('connect', socket => {
-    let clientID
-    let clientBreak = []
-    let groupsBuffer = {}
 
     console.log(socket.id, 'have connected')
-    setSocket(socket)
-    // initializeGroups()
+    
+    const setClientID = async (clientID) => {
+      socket.cid = clientID
+      socket.joinedGroups = await fetchPOST('users/joined',{clientID})
+      console.log(socket.joinedGroups)
+      socket.joinedGroups.forEach(async groupName => {
+        socket.join(groupName)
+      });
+      
+      socket.emit('groups',socket.joinedGroups)
+      clients.push(socket)
+      console.log("clientID set", socket.cid)
+      console.log(clients.length)
+    }
+    
+    const removeClient = (client) => clients.splice(clients.indexOf(socket))
+    
+    const joinGroup = (groupName) => socket.join(groupName)
+    const leaveGroup = (groupName) => socket.leave(groupName)
+    
+    const dbAddMember = (groupName) => {} // unimplement
+    const dbRemoveMember = (groupName) => {} // unimplement
+    
+    const initializeGroups = () => {
+      let groups = getSubscribeGroups() // unimplement
+      socket.emit('showGroups', groups)
+    }
+     
+    const dbsendMSG = async (groupName,senderID,text) => {
+      // update mongo
+      console.log("updating mongo")
+      await fetchPOST('users/sendmessage',{groupName,senderID,text})
+    }
+    
+    const boardcast = (groupName,msg) => {
+      socket.to(groupName).emit('msg',groupName,msg)
+    }
+    
+    const notify = (groupName) => {
+      socket.to(groupName).emit('update',groupName)
+    }
+    
+    const fetchPOST = (url,body) => {
+      return fetch(_url + url,{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(body)
+      }).then(res => res.json())
+    }
+
+    socket.on('clientID', (clientID) => {
+      setClientID(clientID)
+    })
 
     socket.on('disconnect', () => {
       console.log(socket.id, 'have disconnected')
@@ -57,5 +112,6 @@ const socket = (server) => {
     })
   })
 }
+
 
 module.exports = socket

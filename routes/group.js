@@ -65,11 +65,10 @@ router.post('/creategroup', async function (req, res) {
 
 });
 
-router.get('/all',async (req,res) => {
+router.post('/all',async (req,res) => {
     let groups = await Group.find()
-    console.log(groups)
-    let result = { data: "still implementing"}
-    res.json(result)
+    res.json(groups)
 })
+
 
 module.exports = router;

@@ -66,7 +66,7 @@ router.post('/joingroup', async function (req, res, next) {
   });
   try {
     await Group.findOneAndUpdate({ groupName: groupName }, { $push: { members: clientID } });
-    await Client.findOneAndUpdate({ clientID: clientID }, { $push: { subscribedGroups: groupName } });
+    await Client.findOneAndUpdate({ clientID: clientID }, { $push: { joinedGroups: groupName } });
     res.send("insert")
   }
   catch (err) {
@@ -108,4 +108,12 @@ router.post('/sendmessage', async function (req, res, next) {
 
   res.send(newMessage)
 });
+
+
+router.post('/joined',async (req,res) => {
+  let {clientID} = req.body
+  let client = await Client.findOne({clientID})
+  res.json(client.joinedGroups)
+})
+
 module.exports = router;

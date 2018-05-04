@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 const addMyChat = () => {
   console.log('add my chat');
@@ -22,7 +21,6 @@ const addAnotherChat = () => {
   <div class="ml-3"><div class="header"><strong class="primary-font">'+anotherName+'</strong></div>\
   <div class="chatBox">'+chat+'</div><small class="float-right text-muted">12 mins ago</small></div></div></li>')
 }
-=======
 // $('#addTopicBtn').click(()=>{
 //     var topic = $('#nameTopic').val 
 //     console.log("hi",topic)
@@ -32,19 +30,20 @@ const addAnotherChat = () => {
 // })
 
 const joinGroup = () =>{
-    let groupName = $('#joinedTopic').val()
-    fetch('users/joingroup',{
-      method: "POST",
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        clientID:clientID,
-        groupName:groupName
-      })
-    }).then(res => res.text()).then(data => console.log(data))
-  }
+  let groupName = $('#joinedTopic').val()
+  console.log("joining...",groupName)
+  fetch('users/joingroup',{
+    method: "POST",
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      clientID:clientID,
+      groupName:groupName
+    })
+  }).then(res => res.text()).then(data => console.log(data))
+}
 
 $('#joinedGroup').submit((e) => {
     e.preventDefault()
@@ -52,10 +51,8 @@ $('#joinedGroup').submit((e) => {
 })
 
 $('#joinTopicBtn').click(()=>{
-    var topic = $('#joinedTopic').val 
-    console.log("hi",topic)
+    var topic = $('#joinedTopic').val()
     if(topic.length > 0){
         joinGroup()
     }
 })
->>>>>>> 1899e08cfd4b3a8e229d667b9ef7db85e443e0a9
