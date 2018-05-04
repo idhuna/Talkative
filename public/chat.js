@@ -114,7 +114,6 @@ $('#addGroupBtn').click(()=>{
   var group = $('#nameGroup').val()
   if(group.length > 0){
       console.log("hi",group)
-      genGroup();
       createGroup()
   }
 })
