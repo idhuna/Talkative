@@ -13,35 +13,79 @@ async function fetchGroups(){
 
 // we set these in pug
 console.log("clientID",clientID)
+let msges = {}
+
 
 socket.on('connect', () => {
   console.log(`we're connected`, socket.connected)
-  console.log("this is our socket",socket)
+  socket.emit("clientID",clientID)
 })
 
 socket.on('disconnect', () => {
   console.log(`we're disconnected`)
 })
 
-socket.on('msg',(groupID,msg) => {
-  console.log('receive: ',groupID,msg)
+socket.on('reconnect_attempt', () => {
+  console.log('attemp_to_reconnect')
+})
+
+socket.on('msg',(groupName,msg) => {
+  console.log('receive: ',groupName,msg)
+
+})
+
+socket.on('init',msges => {
+  console.log("init")
+  socket.msges = msges
+  console.log(socket.msges)
+})
+
+socket.on('update',groupName => {
+  console.log('we have to update this group',groupName)
+})
+
+socket.on('groups',groups => {
+  console.log("update groups")
+  socket.joinedGroups = groups
+  console.log(socket.joinedGroups)
+  groups.forEach(group => genGroup(group))
 })
 
 $('#join').click(() => {
   console.log("join!!")
 })
 
+function sendMSG(){
+  let msg = $('#btn-input').val()
+  let groupName = $('#chatHeader').text()
+  if(groupName === " Select Some Chat"){
+    alert("Please chose group to send some message")
+    $('#btn-input').val('')
+    return
+  }
+  console.log("sending...",msg)
+  socket.emit('msg',groupName,clientID,msg)
+  addMyChat()
+  $('#btn-input').val('')
+}
+
 $(document).ready(function(){
     console.log("doc rdy");
+    let msg
     $('#btn-chat').click(() =>{
-        socket.emit('msg',"some group",clientID)
-        addMyChat();
+      sendMSG()
     })
     $('#btn-input').keypress(function(e) {
-    if(e.which == 13) {
-        addAnotherChat();
+      if(e.which == 13) {
+          sendMSG()
         }
     });
+    $('.list-group').on('click','a.joinedGroup',() => {
+      console.log('rerender chat')
+      let id = $(this)[0].activeElement.id
+      let groupName = id.substr(7)
+      changeChat(groupName)
+    })
 })
 
 const createGroup = () =>{
@@ -119,7 +163,6 @@ const genGroup = () => {
     });
 }
 
-
 const genUnGroup = () => {
   var group = "Group";
   var time = "1 hour ago";
@@ -158,25 +201,12 @@ const genUnGroup = () => {
     });
 }
 
-const addMyChat = () => {
-    console.log('add my chat');
-    var chat = $('#btn-input').val();
-    if(chat == "") return;
-    var src = "http://placehold.it/50/FA6F57/fff&text=ME";
-    var myName = "Bhaumik Patel"
-    $('#chatMessage').append('<li class="mb-3" style="border:hidden;">\
-    <div class="d-flex flex-row-reverse"><div class="chat-img float-right"><img class="rounded-circle" src='+src+' alt="User Avatar"></div>\
-    <div class="mr-3"><div class="header" style="text-align: right;"><strong class="primary-font">'+myName+'</strong></div>\
-    <div class="chatBox">'+chat+'</div><small class="text-muted">13 mins ago</small></div></div></li>')
-}
-const addAnotherChat = () => {
-    console.log('add Another chat');
-    var chat = $('#btn-input').val();
-    if(chat == "") return;
-    var src = "http://placehold.it/50/55C1E7/fff&amp;text=U";
-    var anotherName = "Jack Sparrow"
-    $('#chatMessage').append('<li class="mb-3" style="border:hidden;">\
-    <div class="d-flex flex-row"><div class="chat-img float-left"><img class="rounded-circle" src='+src+' alt="User Avatar"></div>\
-    <div class="ml-3"><div class="header"><strong class="primary-font">'+anotherName+'</strong></div>\
-    <div class="chatBox">'+chat+'</div><small class="float-right text-muted">12 mins ago</small></div></div></li>')
+async function changeChat(groupName){
+  console.log('changing chat...')
+  $('#chatMessage li').remove()
+  let msg = socket.msges[groupName]
+  msg.forEach(i => {
+    if(i.senderID === clientID) addMyChat(i.senderID,i.text)
+    else addAnotherChat(i.senderID,i.text)
+  })
 }

@@ -1,0 +1,107 @@
+
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+.dropShadow {
+  box-shadow: 0 4px 50px 0 rgba(0, 0, 0, 0.13), 0 10px 25px 0 rgba(0, 0, 0, 0.13);
+}
+.dropBoxShadow{
+  box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.1), 0 4px 9px 0 rgba(0, 0, 0, 0.1);
+}
+.rcorners {
+    border-radius: 12px;
+  padding: 20px;
+}
+.list-group-item:last-child{
+  border-radius: 12px;
+}
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.panel .slidedown .glyphicon, .chat .glyphicon
+{
+    margin-right: 5px;
+}
+.panel-body
+{
+  overflow-y: scroll;
+  height: 250px;
+}
+#scrollbar{
+    height:656px;
+    overflow:auto;
+}
+#scrollbarBody{
+    height:496px;
+    overflow:auto;
+    width: 100%;
+}
+.borderless{
+  border : hidden;
+}
+.chatBox{
+  border-width: 1px; 
+  border-color: rgb(221, 221, 221);
+  border-radius: 20px; 
+  padding: 11px;
+  box-shadow: 0 3px 6px 3px rgb(232, 232, 232);
+  margin-bottom:9px;
+}
+/* .createGroup{
+    position:fixed;
+    font-size:2em;
+    color:#007bff;
+    margin-right:3px;
+    margin-bottom:3px;
+    bottom:55px;
+    right:725px;
+    z-index:10;
+    opacity:0.5;'
+} */
+#unGroupList p, 
+#groupList p{
+  height:2em;
+  line-height: 2em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow:hidden;
+}
+#groupList button{
+    margin-bottom: 6px;
+}
+.createGroup-button{
+  position:absolute;
+  font-size:3em;
+  color:#007bff;
+  z-index:10;
+  opacity:0.5;
+  left: 85%;
+  top: 90%;
+}
+.createGroup-buttonGroup{
+  position:absolute;
+  font-size:3em;
+  color:#007bff;
+  z-index:10;
+  opacity:0.5;
+  left: 70%;
+  top: 90%;
+}
+#groupList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
+    margin-bottom:20px;
+    border-top-right-radius:12px;
+    border-top-left-radius:12px;
+}
+#unGroupList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
+    margin-bottom:20px;
+    border-top-right-radius:12px;
+    border-top-left-radius:12px;
+    background-color: rgb(221, 221, 221);
+    opacity: 0.70;
+}
+.scrollbar-morpheus-den{
+  width:100%
+}

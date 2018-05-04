@@ -1,7 +1,6 @@
 extends layout
 
 block content
-
   html
     head
       link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css')
@@ -9,6 +8,8 @@ block content
       link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.10/css/all.css', integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg', crossorigin='anonymous')
       link(href='https://fonts.googleapis.com/css?family=Quicksand', rel='stylesheet')
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js') 
+      link(rel='stylesheet', href='index.css')
+      
       //- Run Script
       script.
         clientID="#{clientID}"
@@ -226,11 +227,12 @@ block content
           .col-md-7.rcorners.dropShadow
             .container
               .row
+                //- .col-lg-12
                 .card.card-primary.scrollbar-morpheus-den.borderless
                   .card-header
                     div
                         strong#chatHeader(style="font-size:29px;") 
-                            | Chat
+                            |Select Some Chat
                         a.text-muted.float-right(href='#',style="margin-top: 13px;")
                             i.fas.fa-sign-out-alt.fa-lg.mr-3
                                 //- | Leave Group
@@ -241,70 +243,7 @@ block content
                   #scrollbarBody.rcorners
                     div
                       ul#chatMessage.chat
-                        //- left
-                        li.mb-3(style="border:hidden;")
-                          .d-flex.flex-row
-                            .chat-img.float-left
-                              img.rounded-circle(src='http://placehold.it/50/55C1E7/fff&text=U', alt='User Avatar')
-                            .ml-3
-                              .header
-                                strong.primary-font Jack Sparrow
-                              .chatBox
-                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                | dolor, quis ullamcorper ligula sodales.
-                              small.float-right.text-muted
-                                | 12 mins ago
-                        //- right
-                        li.mb-3(style="border:hidden;")
-                          .d-flex.flex-row-reverse
-                            .chat-img.float-right
-                              img.rounded-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
-                            .mr-3
-                              .header(style="text-align: right;")
-                                strong.primary-font Bhaumik Patel
-                              .chatBox
-                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                | dolor, quis ullamcorper ligula sodales.
-                              small.text-muted
-                                | 13 mins ago
-                        //- left
-                        li.mb-3(style="border:hidden;")
-                          .d-flex.flex-row
-                            .chat-img.float-left
-                              img.rounded-circle(src='http://placehold.it/50/55C1E7/fff&text=U', alt='User Avatar')
-                            .ml-3
-                              .header
-                                strong.primary-font Jack Sparrow
-                              .chatBox
-                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                | dolor, quis ullamcorper ligula sodales.
-                              small.float-right.text-muted
-                                | 12 mins ago
-                        //- right
-                        li.mb-3(style="border:hidden;")
-                          .d-flex.flex-row-reverse
-                            .chat-img.float-right
-                              img.rounded-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
-                            .mr-3
-                              .header(style="text-align: right;")
-                                strong.primary-font Bhaumik Patel
-                              .chatBox
-                                | Lorem ipsum dolor sit amet, 
-                              small.text-muted
-                                | 13 mins ago
-                        //- right
-                        li.mb-3(style="border:hidden;")
-                          .d-flex.flex-row-reverse
-                            .chat-img.float-right
-                              img.rounded-circle(src='http://placehold.it/50/FA6F57/fff&text=ME', alt='User Avatar')
-                            .mr-3
-                              .header(style="text-align: right;")
-                                strong.primary-font Bhaumik Patel
-                              .chatBox
-                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                | dolor, quis ullamcorper ligula sodales.
-                              small.text-muted
-                                | 13 mins ago
+
                   .card-footer
                     .input-group
                       input#btn-input.borderless.form-control.form-control-sm(type='text', placeholder='Type your message here...',style="outline:none")
@@ -319,5 +258,5 @@ block content
           
           // socket.io
           script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js')
-          script(src='/genDOM.js')
           script(src='/chat.js')
+          script(src='/genDOM.js')
