@@ -168,7 +168,7 @@ block content
                         input#nameTopic.form-control(type='text', placeholder='Topic')
                     .modal-footer
                       button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                      button#addTopicBtn.btn.btn-primary(type='button', data-dismiss='modal') Create
+                      button#addTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
 
           //- Third column
           .col-md-6.rcorners.dropShadow
@@ -267,4 +267,5 @@ block content
           
           // socket.io
           script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js')
+          script(src='/genDOM.js')
           script(src='/chat.js')

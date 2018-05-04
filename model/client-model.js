@@ -17,7 +17,7 @@ var clientSchema = new Schema({
         type: String,
         required: true,
     },
-    joinedGroups: {
+    subscribedGroups: {
         type: [Schema.Types.ObjectId],
         default: null,
     }
