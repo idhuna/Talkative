@@ -48,29 +48,25 @@ router.post('/joingroup', async function (req, res, next) {
 
   await Group.findOne({ groupName: groupName }, function (err, group) {
     if (err) return handleError(err);
-    var obj = JSON.parse(JSON.stringify({
-      clientID
-    }));
-    console.log('group2234' + group)
-    var inGroup = false;
-    for (var i = 0; i < group.members.length; i++) {
-      if (String(group.members[i]) == clientID) {
-        inGroup = true
-      }
+    else if(!group){
+      res.status(400).send('group not found');
     }
+    console.log('group2234' + group)
 
-    if (inGroup) {
+    if (group.members.includes(clientID)) {
       console.log("had")
-      res.send("already in group")
+      res.status(403).send("already in group")
     }
   });
   try {
-    await Group.findOneAndUpdate({ groupName: groupName }, { $push: { members: clientID } });
-    await Client.findOneAndUpdate({ clientID: clientID }, { $push: { subscribedGroups: groupName } });
-    res.send("insert")
+    await Promise.all([Group.findOneAndUpdate({ groupName: groupName }, { $push: { members: clientID } }),
+                        Client.findOneAndUpdate({ clientID: clientID }, { $push: { joinedGroups: groupName } })
+                      ]);
+    res.send("inserted")
   }
   catch (err) {
     console.log(err);
+    res.send(500).send('internal server error');
   }
 });
 
