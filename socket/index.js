@@ -67,7 +67,11 @@ const socket = (server) => {
     }
     
     const notify = (groupName) => {
-      socket.to(groupName).emit('update',groupName)
+      clients.forEach(async client => {
+        let msg = await fetchPOST('users/readallmessage',{groupName,clientID:client.cid})
+        console.log(msg)
+        io.to(client.id).emit('update',groupName,msg)
+      })
     }
     
     const fetchPOST = (url,body) => {

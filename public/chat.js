@@ -40,8 +40,11 @@ socket.on('init',msges => {
   console.log(socket.msges)
 })
 
-socket.on('update',groupName => {
+socket.on('update',(groupName,msg) => {
   console.log('we have to update this group',groupName)
+  console.log('new msg',msg)
+  socket.msges[groupName] = msg
+  changeChat(groupName)
 })
 
 socket.on('groups',groups => {
@@ -65,7 +68,6 @@ function sendMSG(){
   }
   console.log("sending...",msg)
   socket.emit('msg',groupName,clientID,msg)
-  addMyChat()
   $('#btn-input').val('')
 }
 
@@ -165,4 +167,5 @@ async function changeChat(groupName){
     if(i.senderID === clientID) addMyChat(i.senderID,i.text)
     else addAnotherChat(i.senderID,i.text)
   })
+  $('#chatMessage li').last()[0].scrollIntoView();
 }
