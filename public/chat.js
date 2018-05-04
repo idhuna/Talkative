@@ -78,8 +78,8 @@ $(document).ready(function(){
           sendMSG()
         }
     });
-    $('.joinedGroup').click(() => {
-      console.log('Click!!')
+    $('.list-group').on('click','a.joinedGroup',() => {
+      console.log('rerender chat')
       console.log("click sub",$(this).text())
     })
 })
