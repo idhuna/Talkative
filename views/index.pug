@@ -1,8 +1,6 @@
 extends layout
 
 block content
-  h1=title
-
   html
     head
       link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css')
@@ -117,11 +115,13 @@ block content
             opacity: 0.70;
         }
     body
-      h3.float-right(style="margin-right:40px") 
-        strong
-            | Name : 
-        small
-            | #{clientID}
+      .d-flex.justify-content-between.align-items-end
+        h1=title
+        h3.float-right(style="margin-right:40px") 
+          strong
+              | Name : 
+          small
+              | #{clientID}
       .container-fluid
         .row
           //- First Col
@@ -132,21 +132,6 @@ block content
           //- Second Col
           #scrollbar.col-md-5
             #groupList.list-group.md-5  
-                h3.mb-1.text-muted Subscribed
-                a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#')
-                    .d-flex.w-100.justify-content-start
-                        h5.mb-1 Group 0
-                        .d-flex(style="width:10px;")
-                        i#noti.fas.fa-bell(style="padding-top:1%")
-                        .d-flex.w-75
-                        button.close(type='button', aria-label='Close')
-                            span(aria-hidden='true') ×
-                    .d-flex
-                        p.mb-1
-                          | Donec id elit non mi porta gravida at eget metusDonec id elit non mi porta gravida at eget metusDonec id elit non mi porta 
-                        .my-auto.list-group
-                            small(style=" width: 74px;") 3 days ago
-                            span.badge.badge-primary.badge-pill.mx-auto 140
             #unGroupList.list-group.mt-3  
                 h3.mb-1.text-muted Unsubscribed
                 a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#')

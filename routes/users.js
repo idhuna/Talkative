@@ -135,7 +135,7 @@ router.post('/joined',async (req,res) => {
 
 router.post('/readallmessage', async function (req, res, next) {
   const { groupName } = req.body;
-  // res.send(req.body)
+  res.send(req.body)
 
 
   Message.find({ groupName: groupName }, function (err, messages) {

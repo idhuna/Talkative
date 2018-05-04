@@ -30,6 +30,7 @@ const socket = (server) => {
       socket.joinedGroups.forEach(async groupName => {
         socket.join(groupName)
       });
+      fetchPOST('users/readallmessage',{groupName:socket.joinedGroups[0]})
       
       socket.emit('groups',socket.joinedGroups)
       clients.push(socket)
