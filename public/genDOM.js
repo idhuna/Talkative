@@ -34,7 +34,9 @@ $('#joinGroupBtn').click(()=>{
     }
 })
 
-$('#noti').click(()=>{
-    console.log("close noti")
-    $('#noti').toggleClass("fa-bell fa-bell-slash")
-})
+// $('#noti').click((e)=>{
+//     console.log("toggle noti")
+//     $('#noti').toggleClass("fa-bell fa-bell-slash")
+//     // e.preventDefault();
+//     // e.stopPropagation();
+// })
