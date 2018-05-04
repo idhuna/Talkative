@@ -1,5 +1,5 @@
 console.log('from chat.js')
-var socket = io('http://localhost:3000/')
+var socket = io('http://localhost:3000')
 
 async function fetchFromURLtest(){
   let d = await fetch("https://api.chucknorris.io/jokes/random")
@@ -7,7 +7,7 @@ async function fetchFromURLtest(){
 }
 
 async function fetchGroups(){
-  let groups = await fetch("group/allgroups").then(res => res.json())
+  let groups = await fetch("group/all").then(res => res.json())
   console.log("fetchGroups",groups)
 }
 
@@ -34,6 +34,7 @@ $('#join').click(() => {
 $(document).ready(function(){
     console.log("doc rdy");
     $('#btn-chat').click(() =>{
+        socket.emit('msg',"some group",clientID)
         addMyChat();
     })
     $('#btn-input').keypress(function(e) {
@@ -43,10 +44,8 @@ $(document).ready(function(){
     });
 })
 
-$('#createGroup').submit((e) => {
-  console.log("createGroup")
-  e.preventDefault()
-  let groupName = $('#nameGroup').val()
+const createGroup = () =>{
+  let groupName = $('#nameTopic').val()
   fetch('group/creategroup',{
     method: "POST",
     headers: {
@@ -58,25 +57,23 @@ $('#createGroup').submit((e) => {
       clientID:clientID
     })
   }).then(res => res.text()).then(data => console.log(data))
-  genGroup();
+}
+
+$('#createGroup').submit((e) => {
+    console.log("createGroup")
+    e.preventDefault()
+    createGroup()
 })
 
-$('#joinGroup').submit((e) => {
-  e.preventDefault()
-  let groupName = $('#nameGroupJoin').val()
-  fetch('group/joingroup',{
-    method: "POST",
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      groupName:groupName,
-      clientID:clientID
-    })
-  }).then(res => res.text()).then(data => console.log(data))
-  genUnGroup();
+
+$('#addTopicBtn').click(()=>{
+  var topic = $('#nameTopic').val
+  if(topic.length > 0){
+      console.log("hi",topic)
+      createGroup()
+  }
 })
+
 
 const genGroup = () => {
   var group = "Group ";

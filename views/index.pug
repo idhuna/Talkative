@@ -157,38 +157,39 @@ block content
                         .my-auto.list-group
                             small(style=" width: 74px;") 30 days ago
                             span.badge.badge-primary.badge-pill.mx-auto 10
-            i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#joinGroupModal')
-            i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#groupModal')
-            #groupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='groupModalLabel', aria-hidden='true')
+            i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#topicGroupModal')
+            #topicGroupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5#topicModalLabel.modal-title Join topic
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      span(aria-hidden='true') ×
+                  form#joinGroup
+                    .modal-body
+                      .form-group
+                        label.col-form-label(for='nameTopic') Topic
+                        input#joinedTopic.form-control(type='text', placeholder='Topic')
+                    .modal-footer
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      button#joinTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Join
+
+            i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#topicModal')
+            #topicModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
               .modal-dialog(role='document')
                 .modal-content
                   .modal-header
                     h5#groupModalLabel.modal-title Create a group
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                       span(aria-hidden='true') ×
-                  form#createGroup
-                    .modal-body
+                  .modal-body
+                    form#createGroup
                       .form-group
-                        label.col-form-label(for='nameGroup') Group
-                        input#nameGroup.form-control(type='text', placeholder='Group')
-                    .modal-footer
-                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                      button#createGroup.btn.btn-primary(type='submit', data-dismiss='modal') Create
-            #joinGroupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='joinGroupModalLabel', aria-hidden='true')
-              .modal-dialog(role='document')
-                .modal-content
-                  .modal-header
-                    h5#joinGroupModalLabel.modal-title Join Group
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                      span(aria-hidden='true') ×
-                  form#joinGroupForm
-                    .modal-body
-                      .form-group
-                        label.col-form-label(for='nameGroupGroup') Group
-                        input#nameGroupJoin.form-control(type='text', placeholder='Group')
-                    .modal-footer
-                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                      button#joinGroup.btn.btn-primary(type='button', data-dismiss='modal') Create
+                        label.col-form-label(for='nameTopic') Topic
+                        input#nameTopic.form-control(type='text', placeholder='Topic')
+                  .modal-footer
+                    button#addTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 
           //- Third column
           .col-md-6.rcorners.dropShadow
@@ -287,4 +288,5 @@ block content
           
           // socket.io
           script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js')
+          script(src='/genDOM.js')
           script(src='/chat.js')

@@ -26,22 +26,21 @@ router.post('/creategroup', async function (req, res) {
                     'message': 'group creator information is not found in database'};
             
         }
+        else if(creatorClient.joinedGroups.includes(groupName)){
+            throw {
+                'name':'BulkWriteError',
+            }
+        }
 
         let newGroup = new Group({
             groupName: groupName,
-            members: [creatorClient._id],
+            members: [clientID],
         });
 
+        await Promise.all([newGroup.save(), 
+                            Client.update({"clientID":clientID},{$push:{"joinedGroups":groupName}})
+                        ]);
 
-        let documentresult = await newGroup.save();
-
-
-        updatedJoinedGroups = [...creatorClient.joinedGroups, documentresult._id];
-        Client.update({_id:creatorClient._id},{$set:{joinedGroups:updatedJoinedGroups}})
-        console.log(creatorClient);
-        console.log("LOLOLOLOL")
-        console.log(updatedJoinedGroups);
-        creatorClient.update({joinedGroups: updatedJoinedGroups});
 
         res.send(newGroup);
         // res.render('index');      
@@ -52,6 +51,7 @@ router.post('/creategroup', async function (req, res) {
             res.status('400').send(err);
         }
         else if(err.name === 'BulkWriteError'){
+            console.log(err);
             res.status('403').send('group name exists')
         }
         else{    
@@ -65,7 +65,7 @@ router.post('/creategroup', async function (req, res) {
 
 });
 
-router.get('/allgroups',async (req,res) => {
+router.get('/all',async (req,res) => {
     let groups = await Group.find()
     console.log(groups)
     let result = { data: "still implementing"}

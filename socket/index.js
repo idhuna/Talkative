@@ -1,11 +1,15 @@
 let {
   setSocket,
   addClient,
-  removeClient
+  removeClient,
+  dbsendMSG,
+  dbAddMember,
+  dbRemoveMember
   } = require('./util')
 
 const socket = (server) => {
   let io = require('socket.io')(server)
+  console.log("here in socket");
 
   io.on('connect', socket => {
     let clientID
@@ -20,23 +24,23 @@ const socket = (server) => {
       console.log(socket.id, 'have disconnected')
     })
 
-    socket.on('msg', (groupID,msg) => {
+    socket.on('msg', (groupName,msg) => {
       console.log(socket.id, "send a message")
-      console.log(groupID,msg)
-      // dbAddMsg(groupID, clientID, msg) // unimplement
-      // boardcast(clients,groupID,msg) // unimplement
+      console.log(groupName,msg)
+      dbsendMSG(groupName, clientID, msg) // unimplement
+      // boardcast(clients,groupName,msg) // unimplement
     })
 
-    socket.on('join', (groupID) => {
+    socket.on('join', (groupName) => {
       console.log("user want to join a group")
-      dbAddMember(groupID)
-      joinGroup(groupID)
+      dbAddMember(groupName)
+      joinGroup(groupName)
     })
 
-    socket.on('leave', (groupID) => {
+    socket.on('leave', (groupName) => {
       console.log("user want to leave a group")
-      dbRemoveMember(groupID)
-      leaveGroup(groupID)
+      dbRemoveMember(groupName)
+      leaveGroup(groupName)
     })
 
     socket.on('break', (data) => {
