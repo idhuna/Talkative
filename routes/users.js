@@ -91,6 +91,7 @@ router.post('/leavegroup', async function (req, res, next) {
 
 router.post('/sendmessage', async function (req, res, next) {
   const { senderID, groupName, text } = req.body;
+  console.log(req.body)
   // res.send(req.body)
   let newMessage = new Message({
     senderID: senderID,

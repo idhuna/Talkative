@@ -153,6 +153,22 @@ block content
                             small(style=" width: 74px;") 30 days ago
                             span.badge.badge-primary.badge-pill.mx-auto 10
             i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#topicGroupModal')
+            #topicGroupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5#topicModalLabel.modal-title Join topic
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      span(aria-hidden='true') ×
+                  form#joinGroup
+                    .modal-body
+                      .form-group
+                        label.col-form-label(for='nameTopic') Topic
+                        input#joinedTopic.form-control(type='text', placeholder='Topic')
+                    .modal-footer
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      button#joinTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Join
+
             i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#topicModal')
             #topicModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
               .modal-dialog(role='document')
@@ -161,14 +177,14 @@ block content
                     h5#topicModalLabel.modal-title Create a topic
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                       span(aria-hidden='true') ×
-                  form#createGroup
-                    .modal-body
+                  .modal-body
+                    form#createGroup
                       .form-group
                         label.col-form-label(for='nameTopic') Topic
                         input#nameTopic.form-control(type='text', placeholder='Topic')
-                    .modal-footer
-                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                      button#addTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
+                  .modal-footer
+                    button#addTopicBtn.btn.btn-primary(type='submit', data-dismiss='modal') Create
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 
           //- Third column
           .col-md-6.rcorners.dropShadow
