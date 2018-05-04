@@ -22,11 +22,11 @@ module.exports = function() {
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, '../public')));
 
-    var indexRouter = require('../routes/index')
+    var chatRouter = require('../routes/chat')
     var usersRouter = require('../routes/users')
     var groupRouter = require('../routes/group')
     
-    app.use('/', indexRouter);
+    app.use('/', chatRouter);
     app.use('/users', usersRouter);
     app.use('/group', groupRouter);
 
