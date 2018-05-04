@@ -80,42 +80,44 @@ router.post('/leavegroup', async function (req, res, next) {
   const { clientID, groupName } = req.body;
   try {
 
-    let requestGroup = await Group.findOne({ 'groupName': groupName });
-    let requestClient = await Client.findOne({ 'clientID': clientID });
+    // let requestGroup = await Group.findOne({ 'groupName': groupName });
+    // let requestClient = await Client.findOne({ 'clientID': clientID });
 
 
-    if (!requestGroup || !requestClient) {
-      throw {
-        'name': 'NullRequestError',
-        'message': 'Requested group or client is not found'
-      }
-    }
-    else if (!requestClient.joinedGroups.includes(groupName) || !requestGroup.members.includes(clientID)) {
-      throw {
-        'name': 'NotExistError',
-        'message': 'Either user is not in the group or group does not see client as their user'
-      }
-    }
+    // if (!requestGroup || !requestClient) {
+    //   throw {
+    //     'name': 'NullRequestError',
+    //     'message': 'Requested group or client is not found'
+    //   }
+    // }
+    // else if (!requestClient.joinedGroups.includes(groupName) || !requestGroup.members.includes(clientID)) {
+    //   throw {
+    //     'name': 'NotExistError',
+    //     'message': 'Either user is not in the group or group does not see client as their user'
+    //   }
+    // }
 
     console.log(clientID, groupName)
     await Group.findOneAndUpdate({ groupName: groupName }, { $pull: { members: clientID } });
     // await Client.findOneAndUpdate({ clientID: clientID }, { $pull: { subscribedGroups: groupName } });
     await Client.findOne({ clientID: clientID }, async function (err, client) {
       if (err) return handleError(err);
-      var size = client.subscribedGroups.length
+      console.log(client)
+      var size = client.joinedGroups.length
       var joins = []
       var breaks = []
       var lastsmgs = []
       for (var i = 0; i < size; i++) {
+        console.log(groupName, client.joinedGroups[i])
         if (groupName != client.joinedGroups[i]) {
           joins.push(client.joinedGroups[i])
           breaks.push(client.break[i])
           lastsmgs.push(client.lastmsg[i])
         }
       }
-      await Client.findOneAndUpdate({ clientID: clientID }, { $set: { joinedGroups: join, break: breaks, lastmsg: lastsmgs } });
+      console.log(joins)
+      res.send(await Client.findOneAndUpdate({ clientID: clientID }, { $set: { joinedGroups: joins, break: breaks, lastmsg: lastsmgs } }));
     });
-    res.send("leave")
   }
   catch (err) {
 
