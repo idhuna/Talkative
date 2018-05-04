@@ -1,5 +1,5 @@
 console.log('from chat.js')
-var socket = io('http://localhost:3000')
+var socket = io(`http://192.168.137.1:${port}`)
 // var socket = io('http://localhost')
 
 async function fetchFromURLtest(){
@@ -26,11 +26,17 @@ socket.on('connect', () => {
 })
 
 socket.on('disconnect', () => {
+  // console.log('disconnect')
+  // if(port === 3000) port = 3004
+  // else port = 3000
+  // socket = io(`http://192.168.137.1:${port}`,{reconnection: false})
+  // socket.connect();
   console.log(`we're disconnected`)
 })
 
 socket.on('reconnect_attempt', () => {
   console.log('attemp_to_reconnect')
+  console.log("port",port)
 })
 
 socket.on('msg',(groupName,msg) => {
@@ -40,7 +46,7 @@ socket.on('msg',(groupName,msg) => {
 
 socket.on('init',msges => {
   console.log("init")
-  socket.msges = msges
+  socket.msges = msges || {}
   console.log(socket.msges)
 })
 

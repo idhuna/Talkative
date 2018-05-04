@@ -9,7 +9,7 @@
 //   } = require('./util')
 
 let fetch = require('node-fetch')
-let _url = 'http://localhost:3000/'
+let _url = `http://192.168.137.1:${process.env.PORT}/`
 // let _url = 'http://localhost/'
 
 let clients = []

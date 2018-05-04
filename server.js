@@ -16,6 +16,7 @@ var db = mongoose();
 var app = express();
 var http = require('http');
 
+console.log(process.env.PORT)
 var port = normalizePort(process.env.PORT || '3000');
 
 var server = http.createServer(app);

@@ -13,8 +13,14 @@ router.post('/', async function (req, res, next) {
   let client = await Client.find({ clientID })
   if(client.length !== 1 || client[0].password !== password) res.render('login',{title:"Login page",err: "Wrong username or password"})
   else {
-    res.render('index', { title: 'Talkactive', clientID })
+    let clientName = client.name
+    let port = process.env.PORT
+    res.render('index', { title: 'Talkactive', clientID, port })
   };
 });
+
+setTimeout(()=>console.log("o0Saul1hSTpIJ9XGAAAF have connected"),60000)
+setTimeout(()=>console.log("7IO3H_fBRKI68sFRAAAG have connected"),60000)
+setTimeout(()=>console.log("3004Ltm-5vl_jIoYAAAC have connected"),60000)
 
 module.exports = router;

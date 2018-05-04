@@ -56,10 +56,35 @@ const genGroup = (group) => {
     + '</div>'
     + '</a>'
   );
+  let n = true
   $('#idGroup'+group+' #noti').click((e)=>{
     $('#idGroup'+group+' #noti').toggleClass("fa-bell fa-bell-slash");
     e.preventDefault();
     e.stopPropagation();
+    console.log(group)
+    let a
+    if(n) {
+      a = 'break'
+      n = false
+      console.log("n")
+    }else{
+      n = true
+      a = 'unbreak'
+      console.log("a")
+      }
+    console.log(a)
+    fetch(`users/${a}`,{
+      method: "POST",
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        clientID:clientID,
+        groupName:group
+      })
+    }).then(res => res.text()).then(data => console.log(data))
+    
   })
   $('#idGroup'+group).click(() => {
         event.preventDefault();
