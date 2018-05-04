@@ -2,12 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var messageSchema = new Schema({
-    groupID: {
-        type: Schema.Types.ObjectId,
+    groupName: {
+        type: String,
         required: true,
     },
     senderID: {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: true,
     },
     text: {
@@ -20,5 +20,5 @@ var messageSchema = new Schema({
     }
 });
 
-const Message = mongoose.model('Message',messageSchema);
+const Message = mongoose.model('Message', messageSchema);
 module.exports = Message;

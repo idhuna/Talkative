@@ -6,6 +6,7 @@ let {
 
 const socket = (server) => {
   let io = require('socket.io')(server)
+  console.log("here in socket");
 
   io.on('connect', socket => {
     let clientID
@@ -15,7 +16,7 @@ const socket = (server) => {
     console.log(socket.id, 'have connected')
     setSocket(socket)
     // initializeGroups()
-    
+
     socket.on('disconnect', () => {
       console.log(socket.id, 'have disconnected')
     })

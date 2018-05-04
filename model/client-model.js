@@ -18,7 +18,7 @@ var clientSchema = new Schema({
         required: true,
     },
     joinedGroups: {
-        type: [Schema.Types.ObjectId],
+        type: [String],
         default: null,
     }
 

@@ -1,5 +1,5 @@
 console.log('from chat.js')
-var socket = io('http://localhost:3000/')
+var socket = io('http://localhost:3000')
 
 async function fetchFromURLtest(){
   let d = await fetch("https://api.chucknorris.io/jokes/random")
@@ -31,11 +31,40 @@ $('#join').click(() => {
   console.log("join!!")
 })
 
+$(document).ready(function(){
+    console.log("doc rdy");
+    $('#btn-chat').click(() =>{
+        addMyChat();
+    })
+    $('#btn-input').keypress(function(e) {
+    if(e.which == 13) {
+        addAnotherChat();
+        }
+    });
+})
+
 $('#createGroup').submit((e) => {
   console.log("createGroup")
   e.preventDefault()
   let groupName = $('#nameTopic').val()
   fetch('group/creategroup',{
+    method: "POST",
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      groupName:groupName,
+      clientID:clientID
+    })
+  }).then(res => res.text()).then(data => console.log(data))
+})
+
+$('#joinGroup').submit((e) => {
+  console.log("joinGroup")
+  e.preventDefault()
+  let groupName = $('#nameTopic').val()
+  fetch('group/joingroup',{
     method: "POST",
     headers: {
       'Accept': 'application/json, text/plain, */*',
@@ -56,20 +85,58 @@ const genGroup = () => {
   event.preventDefault();
   topic = $('#nameTopic').val();
   $('#nameTopic').val("")
-  $("#topicList").append('<a href="#" id="id'+topic+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
+  $("#topicList").append('<a href="#" id="idTopic'+topic+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
     + '<div class="d-flex w-100 justify-content-between">'
     + '<h5 class="mb-1">'+topic+'</h5>' // Topic
     + '  <button type="button" class="close" aria-label="Close">'
     + '       <span aria-hidden="true">&times;</span>'
     + '    </button>'
-    + '  <div class="my-auto list-group">'
-    + '  </div>'
     + '</div>'
     + '<div class="d-flex">'
-    + '<p class="mb-1" style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;">'+lastChat+'</p>' 
+    + '<p class="mb-1" style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;">'+lastChat+'</p>'
+    + '  <div class="my-auto list-group">'
     + '    <small style=" width: 74px;">'+time+'</small>' // Date
-    + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read 
+    + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read
+     + '  </div>'
     + '</div>'
     + '</a>'
   );
+  console.log('imbaeiei',$('a h5').text());
+  $('#idTopic'+topic).click(() => {
+        event.preventDefault();
+        console.log(topic);
+        $('#chatHeader').text(topic);
+  });
+   $('#idTopic'+topic).on("click",".close",function() {
+        event.stopImmediatePropagation();
+     });
+  $('#idTopic'+topic).on("click",".close",function() {
+        event.preventDefault();
+        // event.stopImmediatePropagation();
+        $(this).parents("a").remove();
+        console.log("remove");
+    });
+}
+
+const addMyChat = () => {
+    console.log('add my chat');
+    var chat = $('#btn-input').val();
+    if(chat == "") return;
+    var src = "http://placehold.it/50/FA6F57/fff&text=ME";
+    var myName = "Bhaumik Patel"
+    $('#chatMessage').append('<li class="mb-3" style="border:hidden;">\
+    <div class="d-flex flex-row-reverse"><div class="chat-img float-right"><img class="rounded-circle" src='+src+' alt="User Avatar"></div>\
+    <div class="mr-3"><div class="header" style="text-align: right;"><strong class="primary-font">'+myName+'</strong></div>\
+    <div class="chatBox">'+chat+'</div><small class="text-muted">13 mins ago</small></div></div></li>')
+}
+const addAnotherChat = () => {
+    console.log('add Another chat');
+    var chat = $('#btn-input').val();
+    if(chat == "") return;
+    var src = "http://placehold.it/50/55C1E7/fff&amp;text=U";
+    var anotherName = "Jack Sparrow"
+    $('#chatMessage').append('<li class="mb-3" style="border:hidden;">\
+    <div class="d-flex flex-row"><div class="chat-img float-left"><img class="rounded-circle" src='+src+' alt="User Avatar"></div>\
+    <div class="ml-3"><div class="header"><strong class="primary-font">'+anotherName+'</strong></div>\
+    <div class="chatBox">'+chat+'</div><small class="float-right text-muted">12 mins ago</small></div></div></li>')
 }
