@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1='Talkactive'
+  h1=title
 
   html
     head
@@ -64,7 +64,7 @@ block content
           box-shadow: 0 3px 6px 3px rgb(232, 232, 232);
           margin-bottom:9px;
         }
-        /* .createTopic{
+        /* .createGroup{
             position:fixed;
             font-size:2em;
             color:#007bff;
@@ -75,15 +75,15 @@ block content
             z-index:10;
             opacity:0.5;'
         } */
-        #unTopicList p, 
-        #topicList p{
+        #unGroupList p, 
+        #groupList p{
             height:2em;
             line-height: 2em;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow:hidden;
         }
-        #topicList button{
+        #groupList button{
             margin-bottom: 6px;
         }
         .createGroup-button{
@@ -104,12 +104,12 @@ block content
           left: 70%;
           top: 90%;
         }
-        #topicList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
+        #groupList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
             margin-bottom:20px;
             border-top-right-radius:12px;
             border-top-left-radius:12px;
         }
-        #unTopicList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
+        #unGroupList a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners{
             margin-bottom:20px;
             border-top-right-radius:12px;
             border-top-left-radius:12px;
@@ -117,6 +117,11 @@ block content
             opacity: 0.70;
         }
     body
+      h3.float-right(style="margin-right:40px") 
+        strong
+            | Name : 
+        small
+            | #{clientID}
       .container-fluid
         .row
           //- First Col
@@ -126,11 +131,11 @@ block content
               i.fas.fa-user-plus
           //- Second Col
           #scrollbar.col-md-5
-            #topicList.list-group.md-5  
+            #groupList.list-group.md-5  
                 h3.mb-1.text-muted Subscribed
                 a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#')
                     .d-flex.w-100.justify-content-between
-                        h5.mb-1 Topic 0
+                        h5.mb-1 Group 0
                         button.close(type='button', aria-label='Close')
                             span(aria-hidden='true') ×
                     .d-flex
@@ -139,11 +144,11 @@ block content
                         .my-auto.list-group
                             small(style=" width: 74px;") 3 days ago
                             span.badge.badge-primary.badge-pill.mx-auto 140
-            #unTopicList.list-group.mt-3  
+            #unGroupList.list-group.mt-3  
                 h3.mb-1.text-muted Unsubscribed
                 a.list-group-item.list-group-item-action.flex-column.dropBoxShadow.align-items-start.rcorners(href='#')
                     .d-flex.w-100.justify-content-between
-                        h5.mb-1 Topic 1
+                        h5.mb-1 Group 1
                         button.close(type='button', aria-label='Close')
                             span(aria-hidden='true') ×
                     .d-flex
@@ -152,23 +157,38 @@ block content
                         .my-auto.list-group
                             small(style=" width: 74px;") 30 days ago
                             span.badge.badge-primary.badge-pill.mx-auto 10
-            i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#topicGroupModal')
-            i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#topicModal')
-            #topicModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='topicModalLabel', aria-hidden='true')
+            i.createGroup-buttonGroup.fas.fa-users.fa-pull-right(data-toggle='modal', data-target='#joinGroupModal')
+            i.createGroup-button.fas.fa-plus-circle.fa-pull-right(data-toggle='modal', data-target='#groupModal')
+            #groupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='groupModalLabel', aria-hidden='true')
               .modal-dialog(role='document')
                 .modal-content
                   .modal-header
-                    h5#topicModalLabel.modal-title Create a topic
+                    h5#groupModalLabel.modal-title Create a group
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                       span(aria-hidden='true') ×
                   form#createGroup
                     .modal-body
                       .form-group
-                        label.col-form-label(for='nameTopic') Topic
-                        input#nameTopic.form-control(type='text', placeholder='Topic')
+                        label.col-form-label(for='nameGroup') Group
+                        input#nameGroup.form-control(type='text', placeholder='Group')
                     .modal-footer
                       button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                      button#addTopicBtn.btn.btn-primary(type='button', data-dismiss='modal') Create
+                      button#createGroup.btn.btn-primary(type='submit', data-dismiss='modal') Create
+            #joinGroupModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='joinGroupModalLabel', aria-hidden='true')
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5#joinGroupModalLabel.modal-title Join Group
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      span(aria-hidden='true') ×
+                  form#joinGroupForm
+                    .modal-body
+                      .form-group
+                        label.col-form-label(for='nameGroupGroup') Group
+                        input#nameGroupJoin.form-control(type='text', placeholder='Group')
+                    .modal-footer
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      button#joinGroup.btn.btn-primary(type='button', data-dismiss='modal') Create
 
           //- Third column
           .col-md-6.rcorners.dropShadow
