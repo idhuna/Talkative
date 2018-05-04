@@ -6,6 +6,7 @@ let {
 
 const socket = (server) => {
   let io = require('socket.io')(server)
+  console.log("here in socket");
 
   io.on('connect', socket => {
     let clientID

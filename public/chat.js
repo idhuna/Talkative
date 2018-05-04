@@ -1,5 +1,5 @@
 console.log('from chat.js')
-var socket = io('http://localhost:3000/')
+var socket = io('http://localhost:3000')
 
 async function fetchFromURLtest(){
   let d = await fetch("https://api.chucknorris.io/jokes/random")
@@ -31,7 +31,6 @@ $('#join').click(() => {
   console.log("join!!")
 })
 
-<<<<<<< HEAD
 $(document).ready(function(){
     console.log("doc rdy");
     $('#btn-chat').click(() =>{
@@ -44,10 +43,7 @@ $(document).ready(function(){
     });
 })
 
-$('#addTopicBtn').click(() => {
-=======
 $('#createGroup').submit((e) => {
->>>>>>> 8d6b7f364aa0c72e9dadcf81afddf01d509260a0
   console.log("createGroup")
   e.preventDefault()
   let groupName = $('#nameTopic').val()

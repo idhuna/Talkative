@@ -22,13 +22,17 @@ module.exports = function() {
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, '../public')));
 
-    var indexRouter = require('../routes/index')
+    var chatRouter = require('../routes/chat')
     var usersRouter = require('../routes/users')
     var groupRouter = require('../routes/group')
+    var loginRouter = require('../routes/login')
+    var registerRouter = require('../routes/register')
     
-    app.use('/', indexRouter);
+    app.use('/chat', chatRouter);
     app.use('/users', usersRouter);
     app.use('/group', groupRouter);
+    app.use('/register', registerRouter);
+    app.use('/', loginRouter);
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
