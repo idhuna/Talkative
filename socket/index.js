@@ -4,12 +4,15 @@ let {
   removeClient,
   dbsendMSG,
   dbAddMember,
-  dbRemoveMember
+  dbRemoveMember,
+  notify
   } = require('./util')
 
 const socket = (server) => {
   let io = require('socket.io')(server)
   console.log("here in socket");
+
+  let buffer = []
 
   io.on('connect', socket => {
     let clientID
@@ -22,11 +25,18 @@ const socket = (server) => {
 
     socket.on('disconnect', () => {
       console.log(socket.id, 'have disconnected')
+      removeClient(socket)
     })
 
-    socket.on('msg', (groupName,clientID,text) => {
+    socket.on('msg', async (groupName,clientID,text) => {
       console.log(socket.id, "send a message")
-      dbsendMSG(groupName, clientID, text) // unimplement
+      buffer.push({groupName,clientID,text})
+      while(buffer.length > 0) {
+        let {groupName, clientID, text} = buffer.pop()
+        await dbsendMSG(groupName,clientID,text)
+        await notify(groupName,clientID)
+      }
+      // dbsendMSG(groupName, clientID, text) // unimplement
       // boardcast(clients,groupName,msg) // unimplement
     })
 

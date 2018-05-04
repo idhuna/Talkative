@@ -5,10 +5,13 @@ let socket
 let clientID
 let clients = []
 
-const setSocket = (s) => socket = s
+const setSocket = (s) => {
+  socket = s
+  clients.push(socket)
+}
 
-const addClient = (client) => clients.push(client)
 const removeClient = (client) => clients.splice(clients.indexOf(socket))
+
 const joinGroup = (groupName) => socket.join(groupName)
 const leaveGroup = (groupName) => socket.leave(groupName)
 
@@ -38,7 +41,9 @@ const boardcast = (groupName,msg) => {
   socket.to(groupName).emit('msg',groupName,msg)
 }
 
-
+const notify = (groupName) => {
+  socket.to(groupName).emit('update',groupName)
+}
 
 module.exports = {
   setSocket,
@@ -47,5 +52,6 @@ module.exports = {
   dbsendMSG,
   boardcast,
   dbAddMember,
-  dbRemoveMember
+  dbRemoveMember,
+  notify
 }
