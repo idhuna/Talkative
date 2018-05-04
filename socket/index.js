@@ -15,7 +15,7 @@ const socket = (server) => {
     console.log(socket.id, 'have connected')
     setSocket(socket)
     // initializeGroups()
-    
+
     socket.on('disconnect', () => {
       console.log(socket.id, 'have disconnected')
     })
