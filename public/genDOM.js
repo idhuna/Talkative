@@ -25,34 +25,43 @@ const addAnotherChat = () => {
 //     var topic = $('#nameTopic').val 
 //     console.log("hi",topic)
 //     if(topic.length > 0){
+// $('#addGroupBtn').click(()=>{
+//     var group = $('#nameGroup').val
+//     console.log("hi",group)
+//     if(group.length > 0){
 //         createGroup
 //     }
 // })
 
 const joinGroup = () =>{
-  let groupName = $('#joinedTopic').val()
-  console.log("joining...",groupName)
-  fetch('users/joingroup',{
-    method: "POST",
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      clientID:clientID,
-      groupName:groupName
-    })
-  }).then(res => res.text()).then(data => console.log(data))
-}
+    let groupName = $('#joinedGroup').val()
+    fetch('users/joingroup',{
+      method: "POST",
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        clientID:clientID,
+        groupName:groupName
+      })
+    }).then(res => res.text()).then(data => console.log(data))
+  }
 
 $('#joinedGroup').submit((e) => {
     e.preventDefault()
     joinGroup()
 })
 
-$('#joinTopicBtn').click(()=>{
-    var topic = $('#joinedTopic').val()
-    if(topic.length > 0){
+$('#joinGroupBtn').click(()=>{
+    var group = $('#joinedGroup').val()
+    console.log("hi",group)
+    if(group.length > 0){
         joinGroup()
     }
+})
+
+$('#noti').click(()=>{
+    console.log("close noti")
+    $('#noti').toggleClass("fa-bell fa-bell-slash")
 })

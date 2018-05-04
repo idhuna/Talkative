@@ -12,9 +12,9 @@ var groupSchema = new Schema({
         type: [String],
         default: null,
     },
-    
+
 });
 
-const Group = mongoose.model('Group',groupSchema);
+const Group = mongoose.model('Group', groupSchema);
 
 module.exports = Group;

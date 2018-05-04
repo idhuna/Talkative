@@ -38,7 +38,8 @@ socket.on('update',groupName => {
 socket.on('groups',groups => {
   console.log("update groups")
   socket.joinedGroups = groups
-  updateGroup()
+  console.log(socket.joinedGroups)
+  // updateGroup()
 })
 
 $('#join').click(() => {
@@ -59,7 +60,7 @@ $(document).ready(function(){
 })
 
 const createGroup = () =>{
-  let groupName = $('#nameTopic').val()
+  let groupName = $('#nameGroup').val()
   fetch('group/creategroup',{
     method: "POST",
     headers: {
@@ -80,26 +81,28 @@ $('#createGroup').submit((e) => {
 })
 
 
-$('#addTopicBtn').click(()=>{
-  var topic = $('#nameTopic').val 
-  if(topic.length > 0){
-      console.log("hi",topic)
+$('#addGroupBtn').click(()=>{
+  var group = $('#nameGroup').val()
+  if(group.length > 0){
+      console.log("hi",group)
+      genGroup();
       createGroup()
   }
 })
 
 
 const genGroup = () => {
-  var topic = "Topic ";
+  var group = "Group ";
   var time = "1 hour ago";
   var notRead = "xx";
   var lastChat = "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.";
   event.preventDefault();
-  topic = $('#nameTopic').val();
-  $('#nameTopic').val("")
-  $("#topicList").append('<a href="#" id="idTopic'+topic+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
+  group = $('#nameGroup').val();
+  $('#nameGroup').val("")
+  $("#groupList").append('<a href="#" id="idGroup'+group+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
     + '<div class="d-flex w-100 justify-content-between">'
-    + '<h5 class="mb-1">'+topic+'</h5>' // Topic
+    + '<h5 class="mb-1">'+group+'</h5>' // Group
+    +' <div class="d-flex" style="width:10px;"></div><i class="fas fa-bell" id="noti" style="padding-top:1%"></i><div class="d-flex w-75"></div>'
     + '  <button type="button" class="close" aria-label="Close">'
     + '       <span aria-hidden="true">&times;</span>'
     + '    </button>'
@@ -114,15 +117,52 @@ const genGroup = () => {
     + '</a>'
   );
   console.log('imbaeiei',$('a h5').text());
-  $('#idTopic'+topic).click(() => {
+  $('#idGroup'+group).click(() => {
         event.preventDefault();
-        console.log(topic);
-        $('#chatHeader').text(topic);
+        console.log(group);
+        $('#chatHeader').text(group);
   });
-   $('#idTopic'+topic).on("click",".close",function() {
+   $('#idGroup'+group).on("click",".close",function() {
         event.stopImmediatePropagation();
      });
-  $('#idTopic'+topic).on("click",".close",function() {
+  $('#idGroup'+group).on("click",".close",function() {
+        event.preventDefault();
+        // event.stopImmediatePropagation();
+        $(this).parents("a").remove();
+        console.log("remove");
+    });
+}
+const genUnGroup = () => {
+  var group = "Group";
+  var time = "1 hour ago";
+  var notRead = "xx";
+  var lastChat = "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.";
+  event.preventDefault();
+  group = $('#nameGroupJoin').val();
+  $('#nameGroupJoin').val("")
+  $("#unGroupList").append('<a href="#" id="idGroup'+group+'" class="list-group-item list-group-item-action flex-column align-items-start rcorners dropBoxShadow" style="margin-bottom:20px">'
+    + '<div class="d-flex w-100 justify-content-between">'
+    + '<h5 class="mb-1">'+group+'</h5>' // Group
+    + '  <button type="button" class="close" aria-label="Close">'
+    + '       <span aria-hidden="true">&times;</span>'
+    + '    </button>'
+    + '</div>'
+    + '<div class="d-flex">'
+    + '<p class="mb-1" style="height:2em;line-height: 2em;white-space: nowrap;text-overflow: ellipsis;overflow:hidden;width:23em;">'+lastChat+'</p>'
+    + '  <div class="my-auto list-group">'
+    + '    <small style=" width: 74px;">'+time+'</small>' // Date
+    + '    <span class="badge badge-primary badge-pill mx-auto">'+notRead+'</span>' //Not read
+     + '  </div>'
+    + '</div>'
+    + '</a>'
+  );
+  console.log('imbaeiei',$('a h5').text());
+  $('#idGroup'+group).click(() => {
+        event.preventDefault();
+        console.log(group);
+        $('#chatHeader').text(group);
+  });
+  $('#idGroup'+group).on("click",".close",function() {
         event.preventDefault();
         // event.stopImmediatePropagation();
         $(this).parents("a").remove();

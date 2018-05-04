@@ -48,29 +48,25 @@ router.post('/joingroup', async function (req, res, next) {
 
   await Group.findOne({ groupName: groupName }, function (err, group) {
     if (err) return handleError(err);
-    var obj = JSON.parse(JSON.stringify({
-      clientID
-    }));
-    console.log('group2234' + group)
-    var inGroup = false;
-    for (var i = 0; i < group.members.length; i++) {
-      if (String(group.members[i]) == clientID) {
-        inGroup = true
-      }
+    else if(!group){
+      res.status(400).send('group not found');
     }
+    console.log('group2234' + group)
 
-    if (inGroup) {
+    if (group.members.includes(clientID)) {
       console.log("had")
-      res.send("already in group")
+      res.status(403).send("already in group")
     }
   });
   try {
-    await Group.findOneAndUpdate({ groupName: groupName }, { $push: { members: clientID } });
-    await Client.findOneAndUpdate({ clientID: clientID }, { $push: { joinedGroups: groupName } });
-    res.send("insert")
+    await Promise.all([Group.findOneAndUpdate({ groupName: groupName }, { $push: { members: clientID } }),
+                        Client.findOneAndUpdate({ clientID: clientID }, { $push: { joinedGroups: groupName } })
+                      ]);
+    res.send("inserted")
   }
   catch (err) {
     console.log(err);
+    res.send(500).send('internal server error');
   }
 });
 
@@ -78,14 +74,35 @@ router.post('/joingroup', async function (req, res, next) {
 router.post('/leavegroup', async function (req, res, next) {
   const { clientID, groupName } = req.body;
   try {
+
+    let requestGroup = await Group.findOne({'groupName':groupName});
+    let requestClient = await Client.findOne({'clientID':clientID});
+
+
+    if(!requestGroup || !requestClient){
+      throw {
+        'name' : 'NullRequestError',
+        'message' : 'Requested group or client is not found'
+      }
+    }
+    else if(!requestClient.joinedGroups.includes(groupName) || !requestGroup.members.includes(clientID)){
+      throw {
+        'name' : 'NotExistError',
+        'message' : 'Either user is not in the group or group does not see client as their user'
+      }
+    }
+    
     console.log(clientID, groupName)
-    await Group.findOneAndUpdate({ groupName: groupName }, { $pull: { members: clientID } });
-    await Client.findOneAndUpdate({ clientID: clientID }, { $pull: { subscribedGroups: groupName } });
-    res.send("leave")
+    await Promise.all([Group.update(requestGroup, {$pull: {members: clientID}}),
+                        Client.update(requestClient, {$pull: {joinedGroups: groupName}})
+                      ]);
+      
+    res.send('client have left the group')
   }
   catch (err) {
 
     console.log(err);
+    res.send(err);
   }
 });
 
@@ -116,4 +133,29 @@ router.post('/joined',async (req,res) => {
   res.json(client.joinedGroups)
 })
 
+router.post('/readallmessage', async function (req, res, next) {
+  const { groupName } = req.body;
+  // res.send(req.body)
+
+
+  Message.find({ groupName: groupName }, function (err, messages) {
+    var msgList = [];
+
+    messages.forEach(function (msg) {
+      var obj = { senderID: msg.senderID, text: msg.text }
+      msgList.push(obj)
+    });
+
+    res.send(msgList);
+  });
+
+  try {
+    await newMessage.save();
+  }
+  catch (err) {
+    console.log(err);
+  }
+
+  res.send(newMessage)
+});
 module.exports = router;
