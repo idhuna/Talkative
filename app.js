@@ -15,7 +15,7 @@ require('./model/message-model');
 var app = express();
 
 
-var indexRouter = require('./routes/index');
+var chatRouter = require('./routes/chat');
 var usersRouter = require('./routes/users');
 var registerRouter = require('./routes/register');
 var loginRouter = require('./routes/login')
@@ -35,7 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
-app.use('/', indexRouter);
+app.use('/chat', chatRouter);
+app.use('/', loginRouter);
 app.use('/login', loginRouter);
 app.use('/group', groupRouter);
 

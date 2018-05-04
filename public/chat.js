@@ -1,6 +1,19 @@
 console.log('from chat.js')
 var socket = io('http://localhost:3000/')
 
+async function fetchFromURLtest(){
+  let d = await fetch("https://api.chucknorris.io/jokes/random")
+  console.log(d)
+}
+
+async function fetchGroups(){
+  let groups = await fetch("group/allgroups").then(res => res.json())
+  console.log("fetchGroups",groups)
+}
+
+// we set these in pug
+console.log("clientID",clientID)
+
 socket.on('connect', () => {
   console.log(`we're connected`, socket.connected)
   console.log("this is our socket",socket)
@@ -18,6 +31,7 @@ $('#join').click(() => {
   console.log("join!!")
 })
 
+<<<<<<< HEAD
 $(document).ready(function(){
     console.log("doc rdy");
     $('#btn-chat').click(() =>{
@@ -31,17 +45,23 @@ $(document).ready(function(){
 })
 
 $('#addTopicBtn').click(() => {
+=======
+$('#createGroup').submit((e) => {
+>>>>>>> 8d6b7f364aa0c72e9dadcf81afddf01d509260a0
   console.log("createGroup")
+  e.preventDefault()
   let groupName = $('#nameTopic').val()
-  let clientID = "phootip" // mock id
-  if(groupName=="")return;
-  fetch('./group/createGroup',{
+  fetch('group/creategroup',{
     method: "POST",
-    body: JSON.stringify(groupName,clientID)
-  }).then(data => {
-    console.log("receive data",data)
-  })
-  genGroup()
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      groupName:groupName,
+      clientID:clientID
+    })
+  }).then(res => res.text()).then(data => console.log(data))
 })
 
 const genGroup = () => {

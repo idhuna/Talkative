@@ -10,7 +10,9 @@ block content
       link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.10/css/all.css', integrity='sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg', crossorigin='anonymous')
       link(href='https://fonts.googleapis.com/css?family=Quicksand', rel='stylesheet')
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js') 
-      
+      //- Run Script
+      script.
+        clientID="#{clientID}"
       style.
         body {
           font-family: 'Quicksand', sans-serif;
@@ -159,14 +161,14 @@ block content
                     h5#topicModalLabel.modal-title Create a topic
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                       span(aria-hidden='true') ×
-                  .modal-body
-                    form
+                  form#createGroup
+                    .modal-body
                       .form-group
                         label.col-form-label(for='nameTopic') Topic
                         input#nameTopic.form-control(type='text', placeholder='Topic')
-                  .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                    button#addTopicBtn.btn.btn-primary(type='button', data-dismiss='modal') Create
+                    .modal-footer
+                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                      button#addTopicBtn.btn.btn-primary(type='button', data-dismiss='modal') Create
 
           //- Third column
           .col-md-6.rcorners.dropShadow

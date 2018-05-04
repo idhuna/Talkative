@@ -9,7 +9,7 @@ block content
         link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css')
       body
         .container
-          form.form-horizontal(role='form', method='POST', action='/register')
+          form.form-horizontal(role='form', method='POST', action='/users/createuser')
             .row
               .col-md-3
               .col-md-6
@@ -33,7 +33,7 @@ block content
                   .input-group.mb-2.mr-sm-2.mb-sm-0
                     .input-group-addon(style='width: 2.6rem')
                       i.fa.fa-tag
-                    input#name.form-control(type='text', name='name', placeholder='Name', required)
+                    input#name.form-control(type='text', name='name', placeholder='Name in the chat', required)
               .col-md-3
             .row
               .col-md-3.field-label-responsive

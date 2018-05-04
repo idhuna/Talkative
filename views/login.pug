@@ -14,12 +14,20 @@ block content
         .jumbotron.d-flex.flex-column(style="align-items:center")
           h1.mb-5.logo Talkative
           .col-lg-6
-            form(action="/login", method="post")
+            form(action="/chat", method="POST")
               .form-group.row
-                label.col-form-label.col-lg-3(for="id") ID
+                label.col-form-label.col-lg-3(for="clientID") ID
                 .col-lg-9
-                  input.form-control(name="id" placeholder="Username")
+                  input.form-control(name="clientID" placeholder="Username")
               .form-group.row
-                label.col-form-label.col-lg-3(for="id") PASSWORD
+                label.col-form-label.col-lg-3(for="password") PASSWORD
                 .col-lg-9
-                  input.form-control(name="id" placeholder="Username")
+                  input.form-control(type="password" name="password" placeholder="Password")
+              .form-group.row.float-right
+                .col-lg-12
+                  button.btn.btn-info Log in
+
+    if msg
+      .alert.alert-success(align="center") #{msg}
+    if err
+      .alert.alert-danger(align="center") #{err}
