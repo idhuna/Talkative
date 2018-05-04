@@ -45,29 +45,11 @@ $(document).ready(function(){
         addAnotherChat();
         }
     });
-    $('#createGroup').submit((e) => {
-      console.log("createGroup")
-      e.preventDefault()
-      let groupName = $('#nameTopic').val()
-      fetch('group/creategroup',{
-        method: "POST",
-        headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          groupName:groupName,
-          clientID:clientID
-        })
-      }).then(res => res.text()).then(data => console.log(data))
-    })
 })
 
-$('#joinGroup').submit((e) => {
-  console.log("joinGroup")
-  e.preventDefault()
+const createGroup = () =>{
   let groupName = $('#nameTopic').val()
-  fetch('group/joingroup',{
+  fetch('group/creategroup',{
     method: "POST",
     headers: {
       'Accept': 'application/json, text/plain, */*',
@@ -78,7 +60,23 @@ $('#joinGroup').submit((e) => {
       clientID:clientID
     })
   }).then(res => res.text()).then(data => console.log(data))
+}
+
+$('#createGroup').submit((e) => {
+    console.log("createGroup")
+    e.preventDefault()
+    createGroup()
 })
+
+
+$('#addTopicBtn').click(()=>{
+  var topic = $('#nameTopic').val 
+  if(topic.length > 0){
+      console.log("hi",topic)
+      createGroup()
+  }
+})
+
 
 const genGroup = () => {
   var topic = "Topic ";
