@@ -60,6 +60,22 @@ $(document).ready(function(){
     })
 })
 
+$('#joinGroup').submit((e) => {
+  console.log("joinGroup")
+  e.preventDefault()
+  let groupName = $('#nameTopic').val()
+  fetch('group/joingroup',{
+    method: "POST",
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      groupName:groupName,
+      clientID:clientID
+    })
+  }).then(res => res.text()).then(data => console.log(data))
+})
 
 const genGroup = () => {
   var topic = "Topic ";

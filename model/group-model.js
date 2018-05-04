@@ -9,7 +9,7 @@ var groupSchema = new Schema({
         trim: true,
     },
     members: {
-        type: [Schema.Types.ObjectId],
+        type: [String],
         default: null,
     },
     
