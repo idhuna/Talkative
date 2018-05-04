@@ -102,7 +102,11 @@ const createGroup = () =>{
       groupName:groupName,
       clientID:clientID
     })
-  }).then(res => res.text()).then(data => console.log(data))
+  }).then(res => res.text()).then(data => {
+    console.log(data)
+    let groupName = data.groupName
+    socket.emit('newGroup', groupName)
+  })
 }
 
 $('#createGroup').submit((e) => {
