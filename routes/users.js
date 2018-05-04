@@ -238,8 +238,35 @@ router.post('/getunread', async function (req, res, next) {
 
 router.post('/break', async function (req, res, next) {
   const { clientID, groupName } = req.body;
-  let a = await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: true } });
-  res.send(a)
+  // let a = await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: true } });
+  // res.send(a)
+  await Message.find({ groupName: groupName }, async function (err, messages) {
+    var msgList = [];
+    messages.forEach(function (msg) {
+      var obj = { id: msg._id, senderID: msg.senderID, text: msg.text }
+      msgList.push(obj)
+    });
+    // console.log(msgList)
+    await Client.findOne({ clientID: clientID }, async function (err, user) {
+      console.log(user)
+      // var msgs = []
+      var breaks = [];
+      for (var i = 0; i < user.joinedGroups.length; i++) {
+        if (user.joinedGroups[i] === groupName) {
+          breaks.push(true)
+          // msgs.push(msgList[msgList.length - 1].id)
+        } else {
+          breaks.push(user.break[i])
+          // msgs.push(msgList[i])
+        }
+      }
+
+
+      res.send(await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: breaks } }))
+
+
+    });
+  });
 });
 
 router.post('/unbreak', async function (req, res, next) {
@@ -251,21 +278,22 @@ router.post('/unbreak', async function (req, res, next) {
       var obj = { id: msg._id, senderID: msg.senderID, text: msg.text }
       msgList.push(obj)
     });
-    // console.log(msgList)
+    console.log(msgList)
     await Client.findOne({ clientID: clientID }, async function (err, user) {
       console.log(user)
       var msgs = []
       var breaks = [];
       for (var i = 0; i < user.joinedGroups.length; i++) {
         if (user.joinedGroups[i] === groupName) {
+          console.log(i)
           breaks.push(false)
           msgs.push(msgList[msgList.length - 1].id)
         } else {
           breaks.push(user.break[i])
-          msgs.push(msgList[i])
+          msgs.push(msgList[i].id)
         }
       }
-
+      console.log(msgs)
 
       res.send(await Client.findOneAndUpdate({ clientID: clientID }, { $set: { break: breaks, lastmsg: msgs } }))
 
