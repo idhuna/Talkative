@@ -5,7 +5,7 @@
 //   dbAddMember,
 //   dbRemoveMember,
 //   notify,
-//   setClientID
+//   init
 //   } = require('./util')
 
 let fetch = require('node-fetch')
@@ -23,18 +23,25 @@ const socket = (server) => {
 
     console.log(socket.id, 'have connected')
     
-    const setClientID = async (clientID) => {
+    const init = async (clientID) => {
       socket.cid = clientID
       socket.joinedGroups = await fetchPOST('users/joined',{clientID})
       console.log(socket.joinedGroups)
+      let msges = {}
       socket.joinedGroups.forEach(async groupName => {
         socket.join(groupName)
+        //let msges["groupName"] = fetchPOST('users/readallmessage',{groupName:groupName,clientID:socket.cid})
+        console.log("fetch messages",msges)
       });
+      socket.msges = msges
+      socket.emit('init',socket.msges)
+
+      console.log("socket msges",socket.msges)
       
       socket.emit('groups',socket.joinedGroups)
       clients.push(socket)
       console.log("clientID set", socket.cid)
-      console.log(clients.length)
+      console.log("clients length",clients.length)
     }
     
     const removeClient = (client) => clients.splice(clients.indexOf(socket))
@@ -75,7 +82,7 @@ const socket = (server) => {
     }
 
     socket.on('clientID', (clientID) => {
-      setClientID(clientID)
+      init(clientID)
     })
 
     socket.on('disconnect', () => {
