@@ -19,8 +19,4 @@ router.post('/', async function (req, res, next) {
   };
 });
 
-setTimeout(()=>console.log("o0Saul1hSTpIJ9XGAAAF have connected"),60000)
-setTimeout(()=>console.log("7IO3H_fBRKI68sFRAAAG have connected"),60000)
-setTimeout(()=>console.log("3004Ltm-5vl_jIoYAAAC have connected"),60000)
-
 module.exports = router;
